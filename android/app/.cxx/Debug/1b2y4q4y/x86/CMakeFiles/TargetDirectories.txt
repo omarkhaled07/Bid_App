@@ -1,0 +1,2 @@
+D:/Omar/Khamsat Projects/bid_app/android/app/.cxx/Debug/1b2y4q4y/x86/CMakeFiles/edit_cache.dir
+D:/Omar/Khamsat Projects/bid_app/android/app/.cxx/Debug/1b2y4q4y/x86/CMakeFiles/rebuild_cache.dir

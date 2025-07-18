@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "901073232536",
+    "project_id": "bid-app-2bdd6",
+    "storage_bucket": "bid-app-2bdd6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901073232536:android:565876f41a1130b9a0e6ed",
+        "android_client_info": {
+          "package_name": "com.example.bid_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxN6CeZZrfbJWRQSD-AisD16tHQL209ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
