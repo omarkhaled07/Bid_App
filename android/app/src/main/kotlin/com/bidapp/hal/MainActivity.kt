@@ -1,4 +1,4 @@
-package com.bid.app
+package com.bidapp.hal
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

@@ -4,7 +4,7 @@ Flutter + Firebase mobile app.
 
 ## Release Metadata
 
-- iOS Bundle Identifier: `com.bid.app`
+- iOS Bundle Identifier: `com.bidapp.hal`
 - App Display Name: `Bid app`
 - Version Name: `1.0.0`
 - Build Number: `1`
@@ -33,7 +33,7 @@ flutter test
 
 ## Firebase iOS Requirements
 
-1. Add `ios/Runner/GoogleService-Info.plist` for iOS app id `com.bid.app`.
+1. Add `ios/Runner/GoogleService-Info.plist` for iOS app id `com.bidapp.hal`.
 2. Regenerate FlutterFire config after changing bundle id:
    - `flutterfire configure --platforms=ios,android,web`
 3. Verify Crashlytics dSYM upload in Xcode build phase after adding Crashlytics SDK.

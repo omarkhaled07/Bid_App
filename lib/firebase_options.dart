@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '901073232536',
     projectId: 'bid-app-2bdd6',
     storageBucket: 'bid-app-2bdd6.firebasestorage.app',
-    iosBundleId: 'com.bid.app',
+    iosBundleId: 'com.bidapp.hal',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '901073232536',
     projectId: 'bid-app-2bdd6',
     storageBucket: 'bid-app-2bdd6.firebasestorage.app',
-    iosBundleId: 'com.bid.app',
+    iosBundleId: 'com.bidapp.hal',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

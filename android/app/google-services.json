@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:901073232536:android:deaf89c24f8a3acea0e6ed",
+        "mobilesdk_app_id": "1:901073232536:android:c4056e76a6e4c7dca0e6ed",
         "android_client_info": {
-          "package_name": "com.bid.app"
+          "package_name": "com.bidapp.hal"
         }
       },
       "oauth_client": [],
