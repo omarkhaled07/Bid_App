@@ -1,4 +1,4 @@
-package com.example.bid_app
+package com.bid.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

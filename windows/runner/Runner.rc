@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "bid_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "bid_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.bid. All rights reserved." "\0"
             VALUE "OriginalFilename", "bid_app.exe" "\0"
             VALUE "ProductName", "bid_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

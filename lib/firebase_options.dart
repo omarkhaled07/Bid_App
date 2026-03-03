@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAxN6CeZZrfbJWRQSD-AisD16tHQL209ks',
-    appId: '1:901073232536:android:565876f41a1130b9a0e6ed',
+    appId: '1:901073232536:android:deaf89c24f8a3acea0e6ed',
     messagingSenderId: '901073232536',
     projectId: 'bid-app-2bdd6',
     storageBucket: 'bid-app-2bdd6.firebasestorage.app',
@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA-kBpdCUZQuyr8E0ol_Kb2HYjH_-pkHwo',
-    appId: '1:901073232536:ios:178bff4182e64a58a0e6ed',
+    appId: '1:901073232536:ios:9d576045d0317341a0e6ed',
     messagingSenderId: '901073232536',
     projectId: 'bid-app-2bdd6',
     storageBucket: 'bid-app-2bdd6.firebasestorage.app',
-    iosBundleId: 'com.app.bid',
+    iosBundleId: 'com.bid.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '901073232536',
     projectId: 'bid-app-2bdd6',
     storageBucket: 'bid-app-2bdd6.firebasestorage.app',
-    iosBundleId: 'com.app.bid',
+    iosBundleId: 'com.bid.app',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
