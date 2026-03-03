@@ -39,9 +39,10 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-      other_ldflags = config.build_settings['OTHER_LDFLAGS'] || ['$(inherited)']
+      other_ldflags = config.build_settings['OTHER_LDFLAGS'] || []
       other_ldflags = [other_ldflags] if other_ldflags.is_a?(String)
-      other_ldflags << '-framework CoreMotion' unless other_ldflags.include?('-framework CoreMotion')
+      other_ldflags << '$(inherited)' unless other_ldflags.any? { |flag| flag.to_s.include?('$(inherited)') }
+      other_ldflags << '-framework CoreMotion' unless other_ldflags.any? { |flag| flag.to_s.include?('CoreMotion') }
       config.build_settings['OTHER_LDFLAGS'] = other_ldflags
     end
   end
