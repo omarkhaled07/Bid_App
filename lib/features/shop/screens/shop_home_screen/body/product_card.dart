@@ -8,7 +8,8 @@ class ProductCard extends StatefulWidget {
   final ProductModel product;
   final bool isSelected;
 
-  const ProductCard({super.key, required this.product, required this.isSelected});
+  const ProductCard(
+      {super.key, required this.product, required this.isSelected});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -18,17 +19,20 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     String daysText = widget.product.status ??
-        (widget.product.endTime != null && widget.product.endTime!.toDate().isAfter(DateTime.now())
+        (widget.product.endTime != null &&
+                widget.product.endTime!.toDate().isAfter(DateTime.now())
             ? _formatRemainingTime(widget.product.endTime!)
             : (widget.product.isSold ? "Sold" : "Finished"));
 
     return GestureDetector(
       onTap: () async {
-        await _incrementViews(widget.product.id, context); // تحديث عدد المشاهدات
+        await _incrementViews(
+            widget.product.id, context); // تحديث عدد المشاهدات
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDescriptionScreen(productId: widget.product.id),
+            builder: (context) =>
+                ProductDescriptionScreen(productId: widget.product.id),
           ),
         );
       },
@@ -73,7 +77,8 @@ class _ProductCardState extends State<ProductCard> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.lightbulb, color: Colors.yellow, size: 16),
+                        const Icon(Icons.lightbulb,
+                            color: Colors.yellow, size: 16),
                         const SizedBox(width: 4),
                         Text(
                           daysText,
@@ -83,9 +88,11 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                     Row(
                       children: [
-                        const Icon(Icons.remove_red_eye_outlined, color: Color(0xffFEFAE5), size: 16),
+                        const Icon(Icons.remove_red_eye_outlined,
+                            color: Color(0xffFEFAE5), size: 16),
                         const SizedBox(width: 4),
-                        Text("${widget.product.views}", style: const TextStyle(color: Color(0xffFEFAE5))),
+                        Text("${widget.product.views}",
+                            style: const TextStyle(color: Color(0xffFEFAE5))),
                       ],
                     ),
                   ],
@@ -105,7 +112,8 @@ class _ProductCardState extends State<ProductCard> {
                 const SizedBox(height: 10),
                 Text(
                   "${widget.product.brand} | ${widget.product.category} | ${widget.product.state}",
-                  style: const TextStyle(color: Color(0xffD4D4D4), fontSize: 12),
+                  style:
+                      const TextStyle(color: Color(0xffD4D4D4), fontSize: 12),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -116,7 +124,9 @@ class _ProductCardState extends State<ProductCard> {
                     Text(
                       "\$${widget.product.maxPrice}",
                       style: const TextStyle(
-                          color: Colors.green, fontSize: 18, fontWeight: FontWeight.bold),
+                          color: Colors.green,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
                     if (widget.product.isSold)
                       Container(
@@ -125,12 +135,16 @@ class _ProductCardState extends State<ProductCard> {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.green),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
                         child: const Row(
                           children: [
-                            Icon(Icons.check_circle, color: Colors.green, size: 16),
+                            Icon(Icons.check_circle,
+                                color: Colors.green, size: 16),
                             SizedBox(width: 4),
-                            Text("Sold", style: TextStyle(color: Colors.green, fontSize: 14)),
+                            Text("Sold",
+                                style: TextStyle(
+                                    color: Colors.green, fontSize: 14)),
                           ],
                         ),
                       ),
@@ -165,7 +179,8 @@ class _ProductCardState extends State<ProductCard> {
     final remainingTime = _formatRemainingTime(endTime);
     return Text(
       remainingTime,
-      style: const TextStyle(color: Colors.orange, fontSize: 12, fontWeight: FontWeight.bold),
+      style: const TextStyle(
+          color: Colors.orange, fontSize: 12, fontWeight: FontWeight.bold),
     );
   }
 
@@ -189,9 +204,13 @@ class _ProductCardState extends State<ProductCard> {
 
         // إذا كان المستخدم لم يشاهد المنتج من قبل
         if (!viewedBy.contains(userId)) {
-          debugPrint("Updating views for Product ID: $productId, User ID: $userId");
+          debugPrint(
+              "Updating views for Product ID: $productId, User ID: $userId");
 
-          await FirebaseFirestore.instance.collection('products').doc(productId).update({
+          await FirebaseFirestore.instance
+              .collection('products')
+              .doc(productId)
+              .update({
             'views': FieldValue.increment(1),
             'viewedBy': FieldValue.arrayUnion([userId]),
             'lastViewed': FieldValue.serverTimestamp(),
@@ -199,14 +218,16 @@ class _ProductCardState extends State<ProductCard> {
 
           debugPrint("Views updated successfully for product: $productId");
         } else {
-          debugPrint("User already viewed this product, not incrementing views");
+          debugPrint(
+              "User already viewed this product, not incrementing views");
         }
       }
     } catch (e) {
       debugPrint('Error updating views: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to update views, please try again')),
+          const SnackBar(
+              content: Text('Failed to update views, please try again')),
         );
       }
     }

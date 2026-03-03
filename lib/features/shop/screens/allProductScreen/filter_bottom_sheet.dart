@@ -24,16 +24,18 @@ class FilterBottomSheet extends StatelessWidget {
           DropdownButton<String>(
             hint: Text("Select Category"),
             onChanged: onCategorySelected,
-            items: ['Bags',
+            items: [
+              'Bags',
               'Accessories',
               'Shoes',
               'Jewelry',
               'Watches',
-              'Fashion']
+              'Fashion'
+            ]
                 .map((category) => DropdownMenuItem(
-              value: category,
-              child: Text(category),
-            ))
+                      value: category,
+                      child: Text(category),
+                    ))
                 .toList(),
           ),
           SizedBox(height: 20),
@@ -44,11 +46,14 @@ class FilterBottomSheet extends StatelessWidget {
           DropdownButton<String>(
             hint: Text("Select Status"),
             onChanged: onStatusSelected,
-            items: ["On Going", "Sold",]
+            items: [
+              "On Going",
+              "Sold",
+            ]
                 .map((status) => DropdownMenuItem(
-              value: status,
-              child: Text(status),
-            ))
+                      value: status,
+                      child: Text(status),
+                    ))
                 .toList(),
           ),
         ],

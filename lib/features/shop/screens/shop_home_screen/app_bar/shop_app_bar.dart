@@ -7,7 +7,7 @@ import '../../search_screen/search_screen.dart';
 
 class ShopAppBarWidget extends StatelessWidget {
   final AuthController authController =
-  Get.put(AuthController()); // تهيئة الـ Controller
+      Get.put(AuthController()); // تهيئة الـ Controller
 
   ShopAppBarWidget({super.key});
 
@@ -51,7 +51,7 @@ class ShopAppBarWidget extends StatelessWidget {
                       child: Text(
                         "What are you looking for?",
                         style:
-                        TextStyle(color: Color(0xffA9A9A9), fontSize: 16),
+                            TextStyle(color: Color(0xffA9A9A9), fontSize: 16),
                       ),
                     ),
                     InkWell(
@@ -69,7 +69,7 @@ class ShopAppBarWidget extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Obx(
-                () => GestureDetector(
+            () => GestureDetector(
               onTap: () {
                 if (authController.isLoggedIn.value) {
                   Get.to(() => ProfileScreen());
@@ -86,8 +86,8 @@ class ShopAppBarWidget extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 20,
                   backgroundImage: authController.userData['profileImage'] !=
-                      null &&
-                      authController.userData['profileImage'].isNotEmpty
+                              null &&
+                          authController.userData['profileImage'].isNotEmpty
                       ? NetworkImage(authController.userData['profileImage'])
                       : const NetworkImage('https://via.placeholder.com/150'),
                 ),

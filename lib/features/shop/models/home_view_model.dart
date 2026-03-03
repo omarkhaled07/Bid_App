@@ -41,8 +41,8 @@ class HomeViewModel extends GetxController {
 
     try {
       List<dynamic> value = await HomeService().getBestSelling();
-      _productModel.assignAll(
-          value.map((e) => ProductModel.fromFirestore(e)).toList());
+      _productModel
+          .assignAll(value.map((e) => ProductModel.fromFirestore(e)).toList());
     } catch (e) {
       print("Error fetching best-selling products: $e");
     } finally {

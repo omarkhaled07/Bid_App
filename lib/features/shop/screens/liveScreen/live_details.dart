@@ -31,7 +31,8 @@ class _LiveDetailsScreenState extends State<LiveDetailsScreen> {
 
   Future<void> _connectToRoom() async {
     try {
-      final String token = await fetchToken("user_${DateTime.now().millisecondsSinceEpoch}");
+      final String token =
+          await fetchToken("user_${DateTime.now().millisecondsSinceEpoch}");
       _room = Room();
 
       // إضافة مستمعين لأحداث الغرفة
@@ -71,7 +72,8 @@ class _LiveDetailsScreenState extends State<LiveDetailsScreen> {
   void _updateViewerCount() {
     if (_room != null) {
       _viewerCount = _room!.remoteParticipants.length;
-      if (!widget.isHost) _viewerCount += 1; // إضافة المضيف إذا كان المستخدم مشاهد
+      if (!widget.isHost)
+        _viewerCount += 1; // إضافة المضيف إذا كان المستخدم مشاهد
     }
   }
 
@@ -122,10 +124,10 @@ class _LiveDetailsScreenState extends State<LiveDetailsScreen> {
 
           // عرض فيديو المشاركين الآخرين
           if (!widget.isHost)
-            ..._remoteParticipants.map((participant) =>
-                Positioned.fill(
-                  child: _renderParticipantVideo(participant),
-                ),
+            ..._remoteParticipants.map(
+              (participant) => Positioned.fill(
+                child: _renderParticipantVideo(participant),
+              ),
             ),
 
           // مؤشر تحميل إذا لم يتم الاتصال بعد
@@ -148,10 +150,12 @@ class _LiveDetailsScreenState extends State<LiveDetailsScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.remove_red_eye, color: Colors.white, size: 16),
+                  const Icon(Icons.remove_red_eye,
+                      color: Colors.white, size: 16),
                   const SizedBox(width: 5),
                   Text("$_viewerCount",
-                      style: const TextStyle(color: Colors.white, fontSize: 14)),
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 14)),
                 ],
               ),
             ),

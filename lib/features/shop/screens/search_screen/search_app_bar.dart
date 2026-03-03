@@ -69,9 +69,9 @@ class _SearchAppBarState extends State<SearchAppBar> {
                         hintStyle: TextStyle(color: Color(0xffA9A9A9)),
                         border: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       ),
-                      style: const TextStyle(fontSize: 16 , color: Colors.black),
+                      style: const TextStyle(fontSize: 16, color: Colors.black),
                       onChanged: (value) {
                         widget.onSearch(value);
                       },

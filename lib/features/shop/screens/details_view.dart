@@ -29,7 +29,8 @@ class DetailsView extends StatelessWidget {
                   children: [
                     Text(
                       model.title, // ✅ تصحيح الوصول إلى `title`
-                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 15),
                     Row(
@@ -46,7 +47,9 @@ class DetailsView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Text('Size', style: TextStyle(fontSize: 16)),
-                              Text(model.size, style: TextStyle(fontSize: 16)), // ✅ تصحيح `size`
+                              Text(model.size,
+                                  style: TextStyle(
+                                      fontSize: 16)), // ✅ تصحيح `size`
                             ],
                           ),
                         ),
@@ -67,7 +70,8 @@ class DetailsView extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(20),
-                                  color: model.color, // ✅ اللون يجب أن يكون `Color`
+                                  color: model
+                                      .color, // ✅ اللون يجب أن يكون `Color`
                                 ),
                               )
                             ],
@@ -78,7 +82,8 @@ class DetailsView extends StatelessWidget {
                     SizedBox(height: 15),
                     Text(
                       'Details',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -104,7 +109,10 @@ class DetailsView extends StatelessWidget {
                     ),
                     Text(
                       '\$${model.minPrice.toStringAsFixed(2)} - \$${model.currentPrice.toStringAsFixed(2)}', // ✅ تحديث السعر
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.blue),
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
                     ),
                   ],
                 ),

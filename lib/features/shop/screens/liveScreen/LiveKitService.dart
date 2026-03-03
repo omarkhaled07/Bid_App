@@ -5,7 +5,8 @@ class LiveKitService {
   Room? _room;
   LocalVideoTrack? _localVideoTrack;
   final List<RemoteParticipant> _remoteParticipants = [];
-  final StreamController<int> _viewerCountController = StreamController<int>.broadcast();
+  final StreamController<int> _viewerCountController =
+      StreamController<int>.broadcast();
 
   Stream<int> get viewerCountStream => _viewerCountController.stream;
   List<RemoteParticipant> get remoteParticipants => _remoteParticipants;
@@ -13,10 +14,10 @@ class LiveKitService {
   Room? get room => _room;
 
   Future<void> connect(
-      String liveKitUrl,
-      String token, {
-        bool isHost = false,
-      }) async {
+    String liveKitUrl,
+    String token, {
+    bool isHost = false,
+  }) async {
     try {
       _room = Room();
       _setupListeners();

@@ -37,8 +37,16 @@ class SignUpScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomTextWidget(txt: "Hello,", txtsize: 32, txtColor: Colors.white, txtAlign: TextAlign.left),
-                CustomTextWidget(txt: "Sign up!", txtsize: 48, txtColor: Colors.white, txtAlign: TextAlign.left),
+                CustomTextWidget(
+                    txt: "Hello,",
+                    txtsize: 32,
+                    txtColor: Colors.white,
+                    txtAlign: TextAlign.left),
+                CustomTextWidget(
+                    txt: "Sign up!",
+                    txtsize: 48,
+                    txtColor: Colors.white,
+                    txtAlign: TextAlign.left),
                 SizedBox(height: 100),
                 CustomTxtFormField(
                   controller: nameController,
@@ -69,31 +77,34 @@ class SignUpScreen extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Obx(() => DropdownButtonFormField<String>(
-                        value: selectedCountryCode.value,
-                        items: countryCodes.map((country) {
-                          return DropdownMenuItem(
-                            value: country["code"],
-                            child: Text(country["code"]!, style: TextStyle(fontSize: 14)), // عرض الكود فقط
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          if (value != null) {
-                            selectedCountryCode.value = value;
-                          }
-                        },
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xff080618), // نفس لون الخلفية
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6),
-                            borderSide: BorderSide.none,
-
-                          ),
-                          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                        ),
-                        dropdownColor: Color(0xff080618), // لون القائمة
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 18),
-                      )),
+                            value: selectedCountryCode.value,
+                            items: countryCodes.map((country) {
+                              return DropdownMenuItem(
+                                value: country["code"],
+                                child: Text(country["code"]!,
+                                    style: TextStyle(
+                                        fontSize: 14)), // عرض الكود فقط
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              if (value != null) {
+                                selectedCountryCode.value = value;
+                              }
+                            },
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Color(0xff080618), // نفس لون الخلفية
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(6),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 10),
+                            ),
+                            dropdownColor: Color(0xff080618), // لون القائمة
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.white, size: 18),
+                          )),
                     ),
                     SizedBox(width: 10),
 
@@ -120,34 +131,36 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 SizedBox(height: 10),
-                Obx(() => DropdownButtonFormField<String>(
-                  value: userType.value,
-                  items: ['Seller', 'Buyer']
-                      .map((type) => DropdownMenuItem(
-                    value: type,
-                    child: Text(type, style: TextStyle(color: Colors.white)),
-                  ))
-                      .toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      userType.value = value;
-                    }
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xff080618), // نفس لون الخلفية
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide.none,
-
+                Obx(
+                  () => DropdownButtonFormField<String>(
+                    value: userType.value,
+                    items: ['Seller', 'Buyer']
+                        .map((type) => DropdownMenuItem(
+                              value: type,
+                              child: Text(type,
+                                  style: TextStyle(color: Colors.white)),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        userType.value = value;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xff080618), // نفس لون الخلفية
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                     ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    dropdownColor: Color(0xff080618), // لون القائمة
+                    icon: Icon(Icons.arrow_drop_down,
+                        color: Colors.white, size: 18),
                   ),
-                  dropdownColor: Color(0xff080618), // لون القائمة
-                  icon: Icon(Icons.arrow_drop_down, color: Colors.white, size: 18),
-                ),
                 ),
                 SizedBox(height: 10),
                 CustomTxtFormField(
@@ -169,7 +182,7 @@ class SignUpScreen extends StatelessWidget {
                         nameController.text.trim(),
                         emailController.text.trim(),
                         passwordController.text.trim(),
-                        phoneController.text.trim() ,
+                        phoneController.text.trim(),
                         userType.value.trim(),
                         selectedCountryCode.value.trim(),
                         selectedCountryName.value.trim(),
@@ -198,7 +211,10 @@ class SignUpScreen extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: " to Log In  ",
-                          style: TextStyle(fontSize: 16, fontFamily: "Lato", color: Colors.white),
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: "Lato",
+                              color: Colors.white),
                         ),
                       ],
                     ),

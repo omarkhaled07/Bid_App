@@ -47,12 +47,14 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
                       return GestureDetector(
                         onTap: () {
                           if (ad.adUrl.isNotEmpty) {
-                            launchUrl(Uri.parse(ad.adUrl)); // 👈 فتح رابط الإعلان
+                            launchUrl(
+                                Uri.parse(ad.adUrl)); // 👈 فتح رابط الإعلان
                           }
                         },
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 300),
-                          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
@@ -73,11 +75,14 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
                                   imageUrl: ad.imageUrl,
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Center(
-                                    child: CircularProgressIndicator(color: Color(0xffFFE70C)),
+                                    child: CircularProgressIndicator(
+                                        color: Color(0xffFFE70C)),
                                   ),
                                   errorWidget: (context, url, error) {
-                                    print("Error loading image: $url"); // 👈 طباعة الخطأ
-                                    return Icon(Icons.error, color: Colors.red); // 👈 أيقونة خطأ
+                                    print(
+                                        "Error loading image: $url"); // 👈 طباعة الخطأ
+                                    return Icon(Icons.error,
+                                        color: Colors.red); // 👈 أيقونة خطأ
                                   },
                                 ),
                                 // طبقة تظليل
@@ -98,7 +103,8 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
                                   padding: const EdgeInsets.all(16),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         ad.title,
@@ -133,13 +139,15 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     adController.ads.length,
-                        (index) => Container(
+                    (index) => Container(
                       width: 8,
                       height: 8,
                       margin: EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: _currentAdIndex == index ? Color(0xffFFE70C) : Colors.grey,
+                        color: _currentAdIndex == index
+                            ? Color(0xffFFE70C)
+                            : Colors.grey,
                       ),
                     ),
                   ),

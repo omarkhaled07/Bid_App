@@ -25,7 +25,7 @@ class PaymobService {
       _logger.i("Requesting auth token from Paymob");
 
       final response = await _retryRequest(
-            () => _dio.post(
+        () => _dio.post(
           "$_baseUrl/auth/tokens",
           data: {"api_key": _apiKey},
         ),
@@ -55,7 +55,7 @@ class PaymobService {
       _logger.i("Creating order for amount: ${amountCents / 100} $currency");
 
       final response = await _retryRequest(
-            () => _dio.post(
+        () => _dio.post(
           "$_baseUrl/ecommerce/orders",
           data: {
             "auth_token": authToken,
@@ -99,7 +99,7 @@ class PaymobService {
       _logger.i("Generating payment key for order: $orderId");
 
       final response = await _retryRequest(
-            () => _dio.post(
+        () => _dio.post(
           "$_baseUrl/acceptance/payment_keys",
           data: {
             "auth_token": authToken,
@@ -131,10 +131,10 @@ class PaymobService {
 
   // بناء بيانات الفاتورة
   Map<String, dynamic> _buildBillingData(
-      String name,
-      String email,
-      String phone,
-      ) {
+    String name,
+    String email,
+    String phone,
+  ) {
     return {
       "first_name": name.split(" ").first,
       "last_name": name.split(" ").length > 1 ? name.split(" ").last : "NA",

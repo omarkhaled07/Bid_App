@@ -10,7 +10,6 @@ import '../cartScreen/cart_screen.dart';
 import '../liveScreen/live_screen.dart';
 import '../shop_home_screen/nav_bar/custom_bottom_nav.dart';
 
-
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
 
@@ -55,65 +54,77 @@ class _FavoritesPageState extends State<FavoritesPage> {
       ),
       body: currentUser == null
           ? const Center(
-        child: Text(
-          "يجب تسجيل الدخول لعرض المفضلة",
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      )
-          : StreamBuilder(
-        stream: _firestore
-            .collection('favorites')
-            .where('userId', isEqualTo: currentUser!.uid)
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(
               child: Text(
-                "لا توجد منتجات مضافة إلى المفضلة بعد",
+                "يجب تسجيل الدخول لعرض المفضلة",
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
-            );
-          }
-          var favoriteItems = snapshot.data!.docs;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 15,
-                childAspectRatio: 0.65,
-              ),
-              itemCount: favoriteItems.length,
-              itemBuilder: (context, index) {
-                var favoriteItem = favoriteItems[index];
-                var productId = favoriteItem['productId'];
-                return FutureBuilder(
-                  future: _firestore.collection('products').doc(productId).get(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> productSnapshot) {
-                    if (productSnapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (!productSnapshot.hasData || !productSnapshot.data!.exists) {
-                      return Card(
-                        color: const Color(0xff1a1a2e),
-                        child: Center(
-                          child: Text("المنتج غير متوفر", style: TextStyle(color: Colors.white)),
-                        ),
+            )
+          : StreamBuilder(
+              stream: _firestore
+                  .collection('favorites')
+                  .where('userId', isEqualTo: currentUser!.uid)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "لا توجد منتجات مضافة إلى المفضلة بعد",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  );
+                }
+                var favoriteItems = snapshot.data!.docs;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 8.0),
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemCount: favoriteItems.length,
+                    itemBuilder: (context, index) {
+                      var favoriteItem = favoriteItems[index];
+                      var productId = favoriteItem['productId'];
+                      return FutureBuilder(
+                        future: _firestore
+                            .collection('products')
+                            .doc(productId)
+                            .get(),
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot> productSnapshot) {
+                          if (productSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          if (!productSnapshot.hasData ||
+                              !productSnapshot.data!.exists) {
+                            return Card(
+                              color: const Color(0xff1a1a2e),
+                              child: Center(
+                                child: Text("المنتج غير متوفر",
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            );
+                          }
+                          var productData = productSnapshot.data!.data()
+                              as Map<String, dynamic>;
+                          return _buildFavoriteProductItem(
+                              productData, productId);
+                        },
                       );
-                    }
-                    var productData = productSnapshot.data!.data() as Map<String, dynamic>;
-                    return _buildFavoriteProductItem(productData, productId);
-                  },
+                    },
+                  ),
                 );
               },
             ),
-          );
-        },
-      ),
       bottomNavigationBar: CustomBottomNav(
         currentIndex: _currentIndex,
         onTap: _onNavTap,
@@ -121,13 +132,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 
-  Widget _buildFavoriteProductItem(Map<String, dynamic> productData, String productId) {
+  Widget _buildFavoriteProductItem(
+      Map<String, dynamic> productData, String productId) {
     return GestureDetector(
       onTap: () {
         Get.to(() => ProductDescriptionScreen(
-          productId: productId,
-          onFavoriteToggle: (isFavorite) => setState(() {}),
-        ));
+              productId: productId,
+              onFavoriteToggle: (isFavorite) => setState(() {}),
+            ));
       },
       child: Stack(
         children: [

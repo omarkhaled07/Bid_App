@@ -19,7 +19,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> _addAddress() async {
-    if (cityController.text.isEmpty || countryController.text.isEmpty || addressController.text.isEmpty) {
+    if (cityController.text.isEmpty ||
+        countryController.text.isEmpty ||
+        addressController.text.isEmpty) {
       Get.snackbar("Error", "Please fill in all fields",
           backgroundColor: Colors.red, colorText: Colors.white);
       return;
@@ -29,8 +31,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       String uid = _auth.currentUser!.uid;
       await _firestore.collection('addresses').add({
         'uid': uid,
-        'country': countryController.text,  // ✅ تم تصحيح الحقل
-        'city': cityController.text,        // ✅ المدينة تُحفظ الآن بشكل صحيح
+        'country': countryController.text, // ✅ تم تصحيح الحقل
+        'city': cityController.text, // ✅ المدينة تُحفظ الآن بشكل صحيح
         'address': addressController.text,
         'timestamp': FieldValue.serverTimestamp(),
       });

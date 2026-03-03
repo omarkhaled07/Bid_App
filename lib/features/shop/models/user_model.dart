@@ -6,7 +6,13 @@ class UserModel {
   String? userType;
   String? profileImage;
 
-  UserModel({this.userId, this.name, this.email, this.phone, this.userType, this.profileImage});
+  UserModel(
+      {this.userId,
+      this.name,
+      this.email,
+      this.phone,
+      this.userType,
+      this.profileImage});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(

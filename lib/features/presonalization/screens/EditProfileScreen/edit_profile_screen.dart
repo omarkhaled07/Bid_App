@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 
 import '../../../authentication/models/auth_model.dart';
 
-
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
@@ -39,7 +38,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> fetchUserData() async {
     String uid = _auth.currentUser!.uid;
-    DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(uid).get();
 
     if (userDoc.exists) {
       userData.value = userDoc.data() as Map<String, dynamic>;
@@ -53,7 +53,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -63,7 +64,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<String?> uploadImageToImgbb(File imageFile) async {
     try {
-      String apiKey = "8b76fe22c80007a299747564ceed8f8a"; // مفتاح Imgbb الخاص بك
+      String apiKey =
+          "8b76fe22c80007a299747564ceed8f8a"; // مفتاح Imgbb الخاص بك
       var url = Uri.parse("https://api.imgbb.com/1/upload?key=$apiKey");
 
       var request = http.MultipartRequest('POST', url)
@@ -85,7 +87,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-
   Future<void> saveProfileChanges() async {
     setState(() {
       isLoading = true;
@@ -105,20 +106,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         "name": nameController.text.trim(),
         "phone": phoneController.text.trim(),
         "email": emailController.text.trim(),
-        if (imageUrl != null) "profileImage": imageUrl, // تحديث الصورة إذا تم رفعها
+        if (imageUrl != null)
+          "profileImage": imageUrl, // تحديث الصورة إذا تم رفعها
       });
 
       Get.back();
-      Get.snackbar("Success", "Profile updated successfully", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Success", "Profile updated successfully",
+          snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
-      Get.snackbar("Error", "Failed to update profile", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Error", "Failed to update profile",
+          snackPosition: SnackPosition.BOTTOM);
     } finally {
       setState(() {
         isLoading = false;
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +149,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       radius: 50,
                       backgroundImage: _imageFile != null
                           ? FileImage(_imageFile!)
-                          : NetworkImage(userData['profileImage'] ?? "") as ImageProvider,
+                          : NetworkImage(userData['profileImage'] ?? "")
+                              as ImageProvider,
                     ),
                     Positioned(
                       bottom: 0,
@@ -163,14 +167,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               SizedBox(height: 20),
               _buildTextField(nameController, "Full Name", Icons.person),
               _buildTextField(phoneController, "Phone Number", Icons.phone),
-              _buildTextField(emailController, "Email", Icons.email, enabled: false),
+              _buildTextField(emailController, "Email", Icons.email,
+                  enabled: false),
               SizedBox(height: 20),
               isLoading
                   ? CircularProgressIndicator()
                   : CustomButton(
-                text: "Save Changes",
-                onPress: saveProfileChanges,
-              ),
+                      text: "Save Changes",
+                      onPress: saveProfileChanges,
+                    ),
             ],
           ),
         );
@@ -178,7 +183,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, IconData icon,
+  Widget _buildTextField(
+      TextEditingController controller, String label, IconData icon,
       {bool enabled = true}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
@@ -191,7 +197,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           prefixIcon: Icon(icon, color: Colors.white),
           filled: true,
           fillColor: Color(0xff1c1b2a),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none),
           labelStyle: TextStyle(color: Colors.white70),
         ),
       ),

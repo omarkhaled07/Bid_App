@@ -5,7 +5,7 @@ class BidTextFormFieldTheme {
   BidTextFormFieldTheme._(); // To avoid creating instances
 
   static final InputDecorationTheme lightInputDecorationTheme =
-  InputDecorationTheme(
+      InputDecorationTheme(
     errorMaxLines: 3,
     prefixIconColor: Colors.grey,
     suffixIconColor: Colors.grey,
@@ -49,7 +49,7 @@ class BidTextFormFieldTheme {
   );
 
   static final InputDecorationTheme darkInputDecorationTheme =
-  InputDecorationTheme(
+      InputDecorationTheme(
     errorMaxLines: 2,
     prefixIconColor: Colors.grey,
     suffixIconColor: Colors.grey,

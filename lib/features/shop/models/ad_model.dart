@@ -10,7 +10,6 @@ class Ad {
   final String adUrl;
   final Timestamp timestamp; // ✅ إضافة timestamp
 
-
   Ad({
     required this.id, // ✅ تعديل
     required this.imageUrl,
@@ -20,7 +19,6 @@ class Ad {
     required this.cost,
     required this.adUrl,
     required this.timestamp, // ✅ إضافة timestamp
-
   });
 
   // تحويل الإعلان إلى Map لإرساله لـ Firestore
@@ -33,7 +31,6 @@ class Ad {
       'cost': cost,
       'adUrl': adUrl,
       'timestamp': timestamp, // ✅ تخزين timestamp
-
     };
   }
 
@@ -48,7 +45,6 @@ class Ad {
       cost: data['cost'],
       adUrl: data['adUrl'],
       timestamp: data['timestamp'] ?? Timestamp.now(), // ✅ التعامل مع timestamp
-
     );
   }
 }

@@ -16,7 +16,8 @@ class ProductDescriptionScreen extends StatefulWidget {
   });
 
   @override
-  _ProductDescriptionScreenState createState() => _ProductDescriptionScreenState();
+  _ProductDescriptionScreenState createState() =>
+      _ProductDescriptionScreenState();
 }
 
 class _ProductDescriptionScreenState extends State<ProductDescriptionScreen> {
@@ -392,9 +393,9 @@ class _ProductDescriptionScreenState extends State<ProductDescriptionScreen> {
 
     Share.share(
       'Check out this ${productData!.get('isAuction') ? 'auction' : 'product'}:'
-          '\n\n${productData!.get('title')}'
-          '\n\nPrice: \$${productData!.get('isAuction') ? productData!.get('maxPrice') : productData!.get('price')}'
-          '\n\n${productData!.get('description')}',
+      '\n\n${productData!.get('title')}'
+      '\n\nPrice: \$${productData!.get('isAuction') ? productData!.get('maxPrice') : productData!.get('price')}'
+      '\n\n${productData!.get('description')}',
       subject: 'Look at this amazing product!',
     );
   }
@@ -405,7 +406,8 @@ class _ProductDescriptionScreenState extends State<ProductDescriptionScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
-        title: const Text("Product Details", style: TextStyle(color: Colors.white)),
+        title: const Text("Product Details",
+            style: TextStyle(color: Colors.white)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -428,362 +430,391 @@ class _ProductDescriptionScreenState extends State<ProductDescriptionScreen> {
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : productData == null
-            ? const Center(
-            child: Text("Product not found", style: TextStyle(color: Colors.white)))
-            : SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        productData!.get('imageUrl') ?? "https://via.placeholder.com/250",
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Container(
-                            height: 250,
-                            color: Colors.grey[900],
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            height: 250,
-                            color: Colors.grey[900],
-                            child: const Center(
-                              child: Icon(Icons.error, color: Colors.red, size: 50),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    if (isAuction)
-                      Positioned(
-                        top: 10,
-                        left: 10,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            "AUCTION",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        productData!.get('title') ?? "Product Title",
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Text(
-                      isAuction
-                          ? "\$${productData!.get('maxPrice')?.toStringAsFixed(2) ?? '0.00'}"
-                          : "\$${productData!.get('price')?.toStringAsFixed(2) ?? '0.00'}",
-                      style: const TextStyle(
-                          color: Colors.orange,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  "Category: ${productData!.get('category') ?? 'Uncategorized'}",
-                  style: TextStyle(color: Colors.grey[400], fontSize: 14),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  productData!.get('description') ?? "No description available.",
-                  style: TextStyle(color: Colors.grey[400], fontSize: 16),
-                ),
-                const SizedBox(height: 12),
-                Divider(color: Colors.grey[700]),
-                const SizedBox(height: 10),
-                if (isAuction) ...[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Start Price: \$${productData!.get('startPrice')?.toStringAsFixed(2) ?? '0.00'}",
-                            style: TextStyle(
-                                color: Colors.orangeAccent,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            "Highest Bid: \$${productData!.get('maxPrice')?.toStringAsFixed(2) ?? '0.00'}",
-                            style: TextStyle(
-                                color: Colors.greenAccent,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      if (!isAuctionEnded)
-                        CircularCountDownTimer(
-                          duration: remainingTime.inSeconds,
-                          initialDuration: 0,
-                          width: 90,
-                          height: 90,
-                          ringColor: Colors.grey.shade800,
-                          fillColor: Colors.orange,
-                          backgroundColor: Colors.black,
-                          strokeWidth: 6.0,
-                          textStyle: const TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                          isReverse: true,
-                          isTimerTextShown: true,
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  Divider(color: Colors.grey[700]),
-                  const SizedBox(height: 15),
-                  if (bids.isNotEmpty) ...[
-                    const Text(
-                      "Bids History:",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    ...bids.map((bid) => ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          bid['userImage'] ?? "https://via.placeholder.com/50",
-                        ),
-                      ),
-                      title: Text(
-                        bid['name'] ?? 'Anonymous',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      subtitle: Text(
-                        "Bid: \$${bid['price']?.toStringAsFixed(2) ?? '0.00'}",
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                      trailing: Text(
-                        _formatTime(bid['createdAt']?.toDate()),
-                        style: TextStyle(color: Colors.grey[500], fontSize: 12),
-                      ),
-                    )),
-                    const SizedBox(height: 15),
-                    Divider(color: Colors.grey[700]),
-                    const SizedBox(height: 15),
-                  ] else if (!isAuctionEnded) ...[
-                    const Text(
-                      "No Bids Yet",
-                      style: TextStyle(color: Colors.grey, fontSize: 16),
-                    ),
-                    const SizedBox(height: 15),
-                  ],
-                  if (isAuctionEnded) ...[
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[900],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            productData!.get('status') == 'sold'
-                                ? Icons.check_circle
-                                : Icons.highlight_off,
-                            color: productData!.get('status') == 'sold'
-                                ? Colors.green
-                                : Colors.red,
-                            size: 30,
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              productData!.get('status') == 'sold'
-                                  ? "Sold to ${productData!.get('highestBidder')} for \$${productData!.get('maxPrice')?.toStringAsFixed(2) ?? '0.00'}"
-                                  : "Auction ended with no bids",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                  ],
-                ],
-                const Text(
-                  "Seller Information:",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage(
-                          productData!.get('sellerImage') ?? "https://via.placeholder.com/50"),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
+                ? const Center(
+                    child: Text("Product not found",
+                        style: TextStyle(color: Colors.white)))
+                : SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  productData!.get('imageUrl') ??
+                                      "https://via.placeholder.com/250",
+                                  height: 250,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Container(
+                                      height: 250,
+                                      color: Colors.grey[900],
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      height: 250,
+                                      color: Colors.grey[900],
+                                      child: const Center(
+                                        child: Icon(Icons.error,
+                                            color: Colors.red, size: 50),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              if (isAuction)
+                                Positioned(
+                                  top: 10,
+                                  left: 10,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.orange.withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Text(
+                                      "AUCTION",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  productData!.get('title') ?? "Product Title",
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Text(
+                                isAuction
+                                    ? "\$${productData!.get('maxPrice')?.toStringAsFixed(2) ?? '0.00'}"
+                                    : "\$${productData!.get('price')?.toStringAsFixed(2) ?? '0.00'}",
+                                style: const TextStyle(
+                                    color: Colors.orange,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
                           Text(
-                            productData!.get('seller') ?? "Unknown Seller",
+                            "Category: ${productData!.get('category') ?? 'Uncategorized'}",
+                            style: TextStyle(
+                                color: Colors.grey[400], fontSize: 14),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            productData!.get('description') ??
+                                "No description available.",
+                            style: TextStyle(
+                                color: Colors.grey[400], fontSize: 16),
+                          ),
+                          const SizedBox(height: 12),
+                          Divider(color: Colors.grey[700]),
+                          const SizedBox(height: 10),
+                          if (isAuction) ...[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Start Price: \$${productData!.get('startPrice')?.toStringAsFixed(2) ?? '0.00'}",
+                                      style: TextStyle(
+                                          color: Colors.orangeAccent,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      "Highest Bid: \$${productData!.get('maxPrice')?.toStringAsFixed(2) ?? '0.00'}",
+                                      style: TextStyle(
+                                          color: Colors.greenAccent,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                if (!isAuctionEnded)
+                                  CircularCountDownTimer(
+                                    duration: remainingTime.inSeconds,
+                                    initialDuration: 0,
+                                    width: 90,
+                                    height: 90,
+                                    ringColor: Colors.grey.shade800,
+                                    fillColor: Colors.orange,
+                                    backgroundColor: Colors.black,
+                                    strokeWidth: 6.0,
+                                    textStyle: const TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                    isReverse: true,
+                                    isTimerTextShown: true,
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            Divider(color: Colors.grey[700]),
+                            const SizedBox(height: 15),
+                            if (bids.isNotEmpty) ...[
+                              const Text(
+                                "Bids History:",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 10),
+                              ...bids.map((bid) => ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                        bid['userImage'] ??
+                                            "https://via.placeholder.com/50",
+                                      ),
+                                    ),
+                                    title: Text(
+                                      bid['name'] ?? 'Anonymous',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    subtitle: Text(
+                                      "Bid: \$${bid['price']?.toStringAsFixed(2) ?? '0.00'}",
+                                      style: TextStyle(color: Colors.grey[400]),
+                                    ),
+                                    trailing: Text(
+                                      _formatTime(bid['createdAt']?.toDate()),
+                                      style: TextStyle(
+                                          color: Colors.grey[500],
+                                          fontSize: 12),
+                                    ),
+                                  )),
+                              const SizedBox(height: 15),
+                              Divider(color: Colors.grey[700]),
+                              const SizedBox(height: 15),
+                            ] else if (!isAuctionEnded) ...[
+                              const Text(
+                                "No Bids Yet",
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 16),
+                              ),
+                              const SizedBox(height: 15),
+                            ],
+                            if (isAuctionEnded) ...[
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[900],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      productData!.get('status') == 'sold'
+                                          ? Icons.check_circle
+                                          : Icons.highlight_off,
+                                      color:
+                                          productData!.get('status') == 'sold'
+                                              ? Colors.green
+                                              : Colors.red,
+                                      size: 30,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        productData!.get('status') == 'sold'
+                                            ? "Sold to ${productData!.get('highestBidder')} for \$${productData!.get('maxPrice')?.toStringAsFixed(2) ?? '0.00'}"
+                                            : "Auction ended with no bids",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                            ],
+                          ],
+                          const Text(
+                            "Seller Information:",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            productData!.get('sellerAddress') ?? "No address provided",
-                            style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(
+                                    productData!.get('sellerImage') ??
+                                        "https://via.placeholder.com/50"),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      productData!.get('seller') ??
+                                          "Unknown Seller",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      productData!.get('sellerAddress') ??
+                                          "No address provided",
+                                      style: TextStyle(
+                                          color: Colors.grey[400],
+                                          fontSize: 14),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      "Listed: ${_formatTime(productData!.get('createdAt')?.toDate())}",
+                                      style: TextStyle(
+                                          color: Colors.grey[500],
+                                          fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "Listed: ${_formatTime(productData!.get('createdAt')?.toDate())}",
-                            style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: isAuction
+                                ? ElevatedButton.icon(
+                                    onPressed: isAuctionEnded
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              isPlacingBid = true;
+                                            });
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PlaceBidPage(
+                                                  productId: widget.productId,
+                                                  currentMaxPrice: productData
+                                                          ?.get('maxPrice')
+                                                          ?.toDouble() ??
+                                                      0,
+                                                ),
+                                              ),
+                                            ).then((_) {
+                                              if (mounted) {
+                                                setState(() {
+                                                  isPlacingBid = false;
+                                                });
+                                                _refresh();
+                                              }
+                                            });
+                                          },
+                                    icon: isPlacingBid
+                                        ? const SizedBox(
+                                            width: 18,
+                                            height: 18,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        : const Icon(Icons.gavel, size: 18),
+                                    label: Text(
+                                      isAuctionEnded
+                                          ? "Auction Ended"
+                                          : isPlacingBid
+                                              ? "Loading..."
+                                              : "Place a Bid",
+                                      style: const TextStyle(
+                                          fontSize: 18, color: Colors.black),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 24),
+                                      backgroundColor: Colors.redAccent,
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  )
+                                : ElevatedButton.icon(
+                                    onPressed:
+                                        isAddingToCart ? null : _addToCart,
+                                    icon: isAddingToCart
+                                        ? const SizedBox(
+                                            width: 18,
+                                            height: 18,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        : const Icon(FontAwesomeIcons.cartPlus,
+                                            size: 18),
+                                    label: Text(
+                                      isAddingToCart
+                                          ? "Adding..."
+                                          : "Add to Cart",
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 24),
+                                      backgroundColor: Colors.blueAccent,
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
                           ),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: isAuction
-                      ? ElevatedButton.icon(
-                    onPressed: isAuctionEnded
-                        ? null
-                        : () {
-                      setState(() {
-                        isPlacingBid = true;
-                      });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PlaceBidPage(
-                            productId: widget.productId,
-                            currentMaxPrice: productData
-                                ?.get('maxPrice')
-                                ?.toDouble() ??
-                                0,
-                          ),
-                        ),
-                      ).then((_) {
-                        if (mounted) {
-                          setState(() {
-                            isPlacingBid = false;
-                          });
-                          _refresh();
-                        }
-                      });
-                    },
-                    icon: isPlacingBid
-                        ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.black,
-                      ),
-                    )
-                        : const Icon(Icons.gavel, size: 18),
-                    label: Text(
-                      isAuctionEnded
-                          ? "Auction Ended"
-                          : isPlacingBid
-                          ? "Loading..."
-                          : "Place a Bid",
-                      style: const TextStyle(
-                          fontSize: 18, color: Colors.black),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 24),
-                      backgroundColor: Colors.redAccent,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  )
-                      : ElevatedButton.icon(
-                    onPressed: isAddingToCart ? null : _addToCart,
-                    icon: isAddingToCart
-                        ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                        : const Icon(FontAwesomeIcons.cartPlus,
-                        size: 18),
-                    label: Text(
-                      isAddingToCart ? "Adding..." : "Add to Cart",
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 24),
-                      backgroundColor: Colors.blueAccent,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

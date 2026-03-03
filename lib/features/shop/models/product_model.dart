@@ -1,5 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:ui';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
   final String id;
@@ -26,7 +27,7 @@ class ProductModel {
   final String seller;
   final String sellerId;
   final String status;
-  final Timestamp? endTime; // ✅ إضافة حقل endTime
+  final Timestamp? endTime;
 
   ProductModel({
     required this.seller,
@@ -53,65 +54,107 @@ class ProductModel {
     required this.highestBidder,
     required this.condition,
     required this.status,
-    this.endTime, // ✅ تضمين endTime في الكونستركتور
+    this.endTime,
   });
 
   factory ProductModel.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data() as Map<String, dynamic>;
+    final dynamic rawData = doc.data();
+    final Map<String, dynamic> data =
+        rawData is Map<String, dynamic> ? rawData : <String, dynamic>{};
+
     return ProductModel(
       id: doc.id,
-      imageUrl: data['imageUrl'] ?? '',
-      title: data['title'] ?? '',
-      size: data['size'] ?? '',
-      color: Color(int.tryParse(data['color'] ?? '0xFF000000') ?? 0xFF000000),
-      description: data['description'] ?? '',
-      minPrice: (data['minPrice'] ?? 0).toDouble(),
-      maxPrice: (data['maxPrice'] ?? 0).toDouble(),
-      startPrice: (data['startPrice'] ?? 0).toDouble(),
-      currentPrice: (data['currentPrice'] ?? 0).toDouble(),
-      daysLeft: data['daysLeft'] ?? 0,
-      views: data['views'] ?? 0,
-      brand: data['brand'] ?? '',
-      category: data['category'] ?? '',
-      state: data['state'] ?? '',
-      isSold: data['isSold'] ?? false,
-      isFavourite: data['isFavourite'] ?? false,
-      isPromoted: data['isPromoted'] ?? false,
-      isAuction: data['isAuction'] ?? false,
-      highestBidder: data['highestBidder'] ?? '',
-      condition: data['condition'] ?? 'New',
-      seller: data['seller'] ?? '',
-      sellerId: data['sellerId'] ?? '',
-      status: data['status'] ?? 'On Going',
-      endTime: data['endTime'], // ✅ قراءة endTime من Firestore
+      imageUrl: (data['imageUrl'] ?? '').toString(),
+      title: (data['title'] ?? '').toString(),
+      size: (data['size'] ?? '').toString(),
+      color: _parseColor(data['color']),
+      description: (data['description'] ?? '').toString(),
+      minPrice: _parseDouble(data['minPrice']),
+      maxPrice: _parseDouble(data['maxPrice']),
+      startPrice: _parseDouble(data['startPrice']),
+      currentPrice: _parseDouble(data['currentPrice']),
+      daysLeft: _parseInt(data['daysLeft']),
+      views: _parseInt(data['views']),
+      brand: (data['brand'] ?? '').toString(),
+      category: (data['category'] ?? '').toString(),
+      state: (data['state'] ?? '').toString(),
+      isSold: data['isSold'] == true,
+      isFavourite: data['isFavourite'] == true,
+      isPromoted: data['isPromoted'] == true,
+      isAuction: data['isAuction'] == true,
+      highestBidder: (data['highestBidder'] ?? '').toString(),
+      condition: (data['condition'] ?? 'New').toString(),
+      seller: (data['seller'] ?? '').toString(),
+      sellerId: (data['sellerId'] ?? '').toString(),
+      status: (data['status'] ?? 'On Going').toString(),
+      endTime:
+          data['endTime'] is Timestamp ? data['endTime'] as Timestamp : null,
     );
   }
 
   Future<void> updateViews() async {
-    try {
-      DocumentReference productRef = FirebaseFirestore.instance.collection('products').doc(id);
+    final DocumentReference productRef =
+        FirebaseFirestore.instance.collection('products').doc(id);
 
-      await FirebaseFirestore.instance.runTransaction((transaction) async {
-        DocumentSnapshot snapshot = await transaction.get(productRef);
-        if (!snapshot.exists) return;
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final DocumentSnapshot snapshot = await transaction.get(productRef);
+      if (!snapshot.exists) {
+        return;
+      }
 
-        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        int currentViews = (data['views'] ?? 0) as int;
-
-        transaction.update(productRef, {'views': currentViews + 1});
-      });
-
-      print("✅ تم تحديث عدد المشاهدات بنجاح!");
-    } catch (e) {
-      print("❌ خطأ أثناء تحديث المشاهدات: $e");
-    }
+      final dynamic rawData = snapshot.data();
+      final Map<String, dynamic> data =
+          rawData is Map<String, dynamic> ? rawData : <String, dynamic>{};
+      final int currentViews = _parseInt(data['views']);
+      transaction.update(productRef, {'views': currentViews + 1});
+    });
   }
 
   Future<void> placeBid(double bidAmount, String userId) async {
-    if (!isAuction || bidAmount <= currentPrice) return;
+    if (!isAuction || bidAmount <= currentPrice) {
+      return;
+    }
     await FirebaseFirestore.instance.collection('products').doc(id).update({
       'currentPrice': bidAmount,
       'highestBidder': userId,
     });
+  }
+
+  static int _parseInt(dynamic value) {
+    if (value is int) {
+      return value;
+    }
+    if (value is double) {
+      return value.toInt();
+    }
+    return int.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
+  static double _parseDouble(dynamic value) {
+    if (value is num) {
+      return value.toDouble();
+    }
+    return double.tryParse(value?.toString() ?? '') ?? 0.0;
+  }
+
+  static Color _parseColor(dynamic value) {
+    if (value is int) {
+      return Color(value);
+    }
+
+    final String colorValue = value?.toString() ?? '';
+    if (colorValue.startsWith('0x')) {
+      final int? parsed = int.tryParse(colorValue.substring(2), radix: 16);
+      if (parsed != null) {
+        return Color(parsed);
+      }
+    }
+
+    final int? parsedInt = int.tryParse(colorValue);
+    if (parsedInt != null) {
+      return Color(parsedInt);
+    }
+
+    return const Color(0xFF000000);
   }
 }

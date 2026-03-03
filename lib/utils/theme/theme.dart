@@ -20,11 +20,11 @@ class BidAppTheme {
     textTheme: BidTextTheme.lightTextTheme, // Reference to your TextTheme
     chipTheme: BidChipTheme.lightChipTheme, // Reference to your ChipTheme
     appBarTheme:
-    BidAppBarTheme.lightAppBarTheme, // Reference to your AppBarTheme
+        BidAppBarTheme.lightAppBarTheme, // Reference to your AppBarTheme
     checkboxTheme:
-    BidCheckboxTheme.lightCheckboxTheme, // Reference to your CheckboxTheme
+        BidCheckboxTheme.lightCheckboxTheme, // Reference to your CheckboxTheme
     bottomSheetTheme:
-    BidBottomSheetTheme.lightBottomSheetTheme, // Corrected typo in the name
+        BidBottomSheetTheme.lightBottomSheetTheme, // Corrected typo in the name
     elevatedButtonTheme: BidElevatedButtonTheme
         .lightElevatedButtonTheme, // Reference to your ElevatedButtonTheme
     outlinedButtonTheme: BidOutlinedButtonTheme
@@ -41,11 +41,11 @@ class BidAppTheme {
     textTheme: BidTextTheme.darkTextTheme, // Reference to your TextTheme
     chipTheme: BidChipTheme.darkChipTheme, // Reference to your ChipTheme
     appBarTheme:
-    BidAppBarTheme.darkAppBarTheme, // Reference to your AppBarTheme
+        BidAppBarTheme.darkAppBarTheme, // Reference to your AppBarTheme
     checkboxTheme:
-    BidCheckboxTheme.darkCheckboxTheme, // Reference to your CheckboxTheme
+        BidCheckboxTheme.darkCheckboxTheme, // Reference to your CheckboxTheme
     bottomSheetTheme:
-    BidBottomSheetTheme.darkBottomSheetTheme, // Corrected typo in the name
+        BidBottomSheetTheme.darkBottomSheetTheme, // Corrected typo in the name
     elevatedButtonTheme: BidElevatedButtonTheme
         .darkElevatedButtonTheme, // Reference to your ElevatedButtonTheme
     outlinedButtonTheme: BidOutlinedButtonTheme

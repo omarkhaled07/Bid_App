@@ -63,8 +63,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Future<void> _loadPaymentSettings() async {
     try {
-      DocumentSnapshot paymentSettings =
-      await FirebaseFirestore.instance.collection('payment_settings').doc('keys').get();
+      DocumentSnapshot paymentSettings = await FirebaseFirestore.instance
+          .collection('payment_settings')
+          .doc('keys')
+          .get();
       if (paymentSettings.exists) {
         setState(() {
           _clientId = paymentSettings['clientId'] as String?;
@@ -104,44 +106,44 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: _isProcessing.value
           ? const Center(child: CircularProgressIndicator())
           : Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.deepPurple.shade50,
-              Colors.deepPurple.shade100,
-            ],
-          ),
-        ),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildPaymentSummaryCard(),
-                const SizedBox(height: 20),
-                _buildPaymentMethodSelector(),
-                const SizedBox(height: 20),
-                _buildPaymentFormCard(),
-                const SizedBox(height: 30),
-                _buildPayButton(context),
-                const SizedBox(height: 15),
-                const Text(
-                  "Your data is securely protected and not stored with us",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.deepPurple.shade50,
+                    Colors.deepPurple.shade100,
+                  ],
+                ),
+              ),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildPaymentSummaryCard(),
+                      const SizedBox(height: 20),
+                      _buildPaymentMethodSelector(),
+                      const SizedBox(height: 20),
+                      _buildPaymentFormCard(),
+                      const SizedBox(height: 30),
+                      _buildPayButton(context),
+                      const SizedBox(height: 15),
+                      const Text(
+                        "Your data is securely protected and not stored with us",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -164,7 +166,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            _buildSummaryRow("Subtotal", "\$${widget.amount.toStringAsFixed(2)}"),
+            _buildSummaryRow(
+                "Subtotal", "\$${widget.amount.toStringAsFixed(2)}"),
             const Divider(),
             _buildSummaryRow(
               "Total",
@@ -206,42 +209,42 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Widget _buildPaymentMethodSelector() {
     return Obx(() => Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Payment Method",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.deepPurple,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: _buildPaymentMethodCard(
-                index: 0,
-                icon: Icons.credit_card,
-                title: "Credit Card",
-                subtitle: "Pay with Visa/Mastercard",
-                isSelected: _selectedPaymentMethod.value == 0,
+            const Text(
+              "Payment Method",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
               ),
             ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: _buildPaymentMethodCard(
-                index: 1,
-                icon: Icons.payment,
-                title: "PayPal",
-                subtitle: "Pay with PayPal account",
-                isSelected: _selectedPaymentMethod.value == 1,
-              ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildPaymentMethodCard(
+                    index: 0,
+                    icon: Icons.credit_card,
+                    title: "Credit Card",
+                    subtitle: "Pay with Visa/Mastercard",
+                    isSelected: _selectedPaymentMethod.value == 0,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: _buildPaymentMethodCard(
+                    index: 1,
+                    icon: Icons.payment,
+                    title: "PayPal",
+                    subtitle: "Pay with PayPal account",
+                    isSelected: _selectedPaymentMethod.value == 1,
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
-    ));
+        ));
   }
 
   Widget _buildPaymentMethodCard({
@@ -388,7 +391,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Colors.deepPurple),
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       ),
       style: const TextStyle(fontSize: 16),
       validator: validator,
@@ -397,45 +401,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Widget _buildPayButton(BuildContext context) {
     return Obx(() => ElevatedButton(
-      onPressed: _isProcessing.value ? null : () => _validateAndPay(context),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        elevation: 3,
-      ),
-      child: _isProcessing.value
-          ? const SizedBox(
-        height: 24,
-        width: 24,
-        child: CircularProgressIndicator(
-          color: Colors.white,
-          strokeWidth: 3,
-        ),
-      )
-          : Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            _selectedPaymentMethod.value == 0
-                ? Icons.credit_card
-                : Icons.payment,
-            size: 20,
-          ),
-          const SizedBox(width: 10),
-          const Text(
-            "Proceed to Payment",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+          onPressed:
+              _isProcessing.value ? null : () => _validateAndPay(context),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
+            elevation: 3,
           ),
-        ],
-      ),
-    ));
+          child: _isProcessing.value
+              ? const SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 3,
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      _selectedPaymentMethod.value == 0
+                          ? Icons.credit_card
+                          : Icons.payment,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      "Proceed to Payment",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+        ));
   }
 
   Future<bool> _processPayPalPayment(BuildContext context) async {
@@ -511,12 +516,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 },
                 "description": "Payment for products",
                 "item_list": {
-                  "items": widget.productIds.map((id) => {
-                    "name": "Product $id",
-                    "quantity": 1,
-                    "price": (widget.amount / widget.productIds.length).toStringAsFixed(2),
-                    "currency": "USD"
-                  }).toList(),
+                  "items": widget.productIds
+                      .map((id) => {
+                            "name": "Product $id",
+                            "quantity": 1,
+                            "price": (widget.amount / widget.productIds.length)
+                                .toStringAsFixed(2),
+                            "currency": "USD"
+                          })
+                      .toList(),
                 }
               }
             ],
@@ -638,9 +646,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
       bool? paymentSuccess;
 
       if (_selectedPaymentMethod.value == 0) {
-        DocumentSnapshot paymentSettings =
-        await FirebaseFirestore.instance.collection('payment_settings').doc('keys').get();
-        if (!paymentSettings.exists || paymentSettings['PaymobIframeId'] == null) {
+        DocumentSnapshot paymentSettings = await FirebaseFirestore.instance
+            .collection('payment_settings')
+            .doc('keys')
+            .get();
+        if (!paymentSettings.exists ||
+            paymentSettings['PaymobIframeId'] == null) {
           Get.snackbar(
             "Error",
             "Failed to load Paymob settings",
@@ -655,10 +666,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
             "https://accept.paymob.com/api/acceptance/iframes/${paymentSettings['PaymobIframeId']}?payment_token=${widget.paymentKey}";
 
         paymentSuccess = await Get.to<bool>(() => PaymentWebView(
-          paymentUrl: paymentUrl,
-          productIds: widget.productIds,
-          paymentData: paymentData,
-        ));
+              paymentUrl: paymentUrl,
+              productIds: widget.productIds,
+              paymentData: paymentData,
+            ));
       } else {
         paymentSuccess = await _processPayPalPayment(context);
       }

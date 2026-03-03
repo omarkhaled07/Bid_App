@@ -1,4 +1,3 @@
-
 import '../../Features/checkout/data/models/amount_model/amount_model.dart';
 import '../../Features/checkout/data/models/amount_model/details.dart';
 import '../../Features/checkout/data/models/item_list_model/item.dart';

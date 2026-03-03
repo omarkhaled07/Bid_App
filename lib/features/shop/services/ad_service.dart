@@ -23,18 +23,17 @@ class AdService {
     }
   }
 
-
-
   // جلب الإعلانات من Firestore
   static Future<List<Ad>> fetchAds() async {
     try {
-      QuerySnapshot snapshot = await adsCollection.orderBy('timestamp', descending: true).get();
+      QuerySnapshot snapshot =
+          await adsCollection.orderBy('timestamp', descending: true).get();
       return snapshot.docs.map((doc) {
-        return Ad.fromMap(doc.id, doc.data() as Map<String, dynamic>); // ✅ تمرير id
+        return Ad.fromMap(
+            doc.id, doc.data() as Map<String, dynamic>); // ✅ تمرير id
       }).toList();
     } catch (e) {
       throw Exception("Error fetching ads: $e");
     }
   }
-
 }

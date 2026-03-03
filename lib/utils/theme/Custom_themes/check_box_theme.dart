@@ -10,7 +10,7 @@ class BidCheckboxTheme {
       borderRadius: BorderRadius.circular(4),
     ),
     checkColor: WidgetStateProperty.resolveWith<Color>(
-          (states) {
+      (states) {
         if (states.contains(WidgetState.selected)) {
           return Colors.white;
         } else {
@@ -19,7 +19,7 @@ class BidCheckboxTheme {
       },
     ),
     fillColor: WidgetStateProperty.resolveWith<Color>(
-          (states) {
+      (states) {
         if (states.contains(WidgetState.selected)) {
           return Colors.blue;
         } else {
@@ -34,7 +34,7 @@ class BidCheckboxTheme {
       borderRadius: BorderRadius.circular(4),
     ),
     checkColor: WidgetStateProperty.resolveWith<Color>(
-          (states) {
+      (states) {
         if (states.contains(WidgetState.selected)) {
           return Colors.white;
         } else {
@@ -43,7 +43,7 @@ class BidCheckboxTheme {
       },
     ),
     fillColor: WidgetStateProperty.resolveWith<Color>(
-          (states) {
+      (states) {
         if (states.contains(WidgetState.selected)) {
           return Colors.blue;
         } else {

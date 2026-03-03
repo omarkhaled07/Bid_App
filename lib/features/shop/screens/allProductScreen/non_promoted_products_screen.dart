@@ -6,7 +6,8 @@ import 'filter_bottom_sheet.dart';
 class NonPromotedProductsScreen extends StatefulWidget {
   final List<ProductModel> nonPromotedProducts;
 
-  const NonPromotedProductsScreen({required this.nonPromotedProducts, super.key});
+  const NonPromotedProductsScreen(
+      {required this.nonPromotedProducts, super.key});
 
   @override
   _NonPromotedProductsScreenState createState() =>
@@ -19,8 +20,10 @@ class _NonPromotedProductsScreenState extends State<NonPromotedProductsScreen> {
 
   List<ProductModel> get filteredProducts {
     return widget.nonPromotedProducts.where((product) {
-      final categoryMatch = selectedCategory == null || product.category == selectedCategory;
-      final statusMatch = selectedStatus == null || product.status == selectedStatus;
+      final categoryMatch =
+          selectedCategory == null || product.category == selectedCategory;
+      final statusMatch =
+          selectedStatus == null || product.status == selectedStatus;
       return categoryMatch && statusMatch;
     }).toList();
   }

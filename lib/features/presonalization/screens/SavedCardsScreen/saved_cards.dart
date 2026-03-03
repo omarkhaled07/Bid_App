@@ -25,10 +25,8 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
   }
 
   Future<List<Map<String, dynamic>>> _fetchCards() async {
-    QuerySnapshot snapshot = await _firestore
-        .collection('cards')
-        .where('uid', isEqualTo: uid)
-        .get();
+    QuerySnapshot snapshot =
+        await _firestore.collection('cards').where('uid', isEqualTo: uid).get();
     return snapshot.docs.map((doc) {
       var data = doc.data() as Map<String, dynamic>;
       data['id'] = doc.id;
@@ -66,7 +64,8 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
-              child: Text("No saved cards found", style: TextStyle(color: Colors.white70, fontSize: 16)),
+              child: Text("No saved cards found",
+                  style: TextStyle(color: Colors.white70, fontSize: 16)),
             );
           }
           return ListView.builder(
@@ -77,11 +76,15 @@ class _SavedCardsScreenState extends State<SavedCardsScreen> {
               return Card(
                 color: Colors.white10,
                 margin: EdgeInsets.symmetric(vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
                 child: ListTile(
                   contentPadding: EdgeInsets.all(16),
                   title: Text("**** **** **** ${card['last4']}",
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold)),
                   subtitle: Text("Expires: ${card['expiryDate']}",
                       style: TextStyle(color: Colors.white70, fontSize: 14)),
                   trailing: IconButton(

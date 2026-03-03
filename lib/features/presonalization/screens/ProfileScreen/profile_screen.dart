@@ -38,7 +38,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return;
       }
 
-      DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(uid).get();
 
       if (!userDoc.exists) {
         print("⚠️ User document does not exist!");
@@ -124,40 +125,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Obx(() => ElevatedButton.icon(
-                onPressed: () async {
-                  print("Current User ID: ${_auth.currentUser!.uid}");
-                  print("Profile User ID: ${userData['uid']}");
+                    onPressed: () async {
+                      print("Current User ID: ${_auth.currentUser!.uid}");
+                      print("Profile User ID: ${userData['uid']}");
 
-                  if (userData['uid'] == null) {
-                    Get.snackbar("Error", "User data is incomplete!",
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white);
-                    return;
-                  }
+                      if (userData['uid'] == null) {
+                        Get.snackbar("Error", "User data is incomplete!",
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white);
+                        return;
+                      }
 
-                  await toggleFollow();
-                },
-                icon: Icon(
-                  isFollowing.value
-                      ? Icons.person_remove
-                      : Icons.person_add,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  isFollowing.value ? "Unfollow" : "Follow",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isFollowing.value
-                      ? Colors.deepPurple
-                      : Colors.indigo, // لون جديد متناسق
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                ),
-              )),
+                      await toggleFollow();
+                    },
+                    icon: Icon(
+                      isFollowing.value
+                          ? Icons.person_remove
+                          : Icons.person_add,
+                      color: Colors.white,
+                    ),
+                    label: Text(
+                      isFollowing.value ? "Unfollow" : "Follow",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isFollowing.value
+                          ? Colors.deepPurple
+                          : Colors.indigo, // لون جديد متناسق
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                  )),
               SizedBox(width: 15),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -170,12 +171,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icon(Icons.group, color: Colors.white, size: 18),
                     SizedBox(width: 5),
                     Obx(() => Text(
-                      "$followersCount",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    )),
+                          "$followersCount",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        )),
                   ],
                 ),
               ),
@@ -248,17 +249,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if (currentUserId == null || profileUserId == null) {
         print("⚠️ User data is incomplete!");
-        Get.snackbar("Error", "User data is incomplete!", backgroundColor: Colors.red, colorText: Colors.white);
+        Get.snackbar("Error", "User data is incomplete!",
+            backgroundColor: Colors.red, colorText: Colors.white);
         return;
       }
 
-      DocumentReference userRef = _firestore.collection('users').doc(profileUserId);
+      DocumentReference userRef =
+          _firestore.collection('users').doc(profileUserId);
 
       if (isFollowing.value) {
-        await userRef.update({'followers': FieldValue.arrayRemove([currentUserId])});
+        await userRef.update({
+          'followers': FieldValue.arrayRemove([currentUserId])
+        });
         followersCount.value--;
       } else {
-        await userRef.update({'followers': FieldValue.arrayUnion([currentUserId])});
+        await userRef.update({
+          'followers': FieldValue.arrayUnion([currentUserId])
+        });
         followersCount.value++;
       }
 
@@ -268,5 +275,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print("❌ Error updating follow status: $e");
     }
   }
-
 }

@@ -1,4 +1,3 @@
-
 import 'package:bid/Payment/Features/checkout/presentation/views/widgets/payment_info_item.dart';
 import 'package:bid/Payment/Features/checkout/presentation/views/widgets/total_price_widget.dart';
 import 'package:flutter/material.dart';

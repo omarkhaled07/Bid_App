@@ -24,7 +24,8 @@ class LoginScreen extends StatelessWidget {
         elevation: 0.0,
         backgroundColor: Color(0xff080618),
       ),
-      body: SingleChildScrollView( // ✅ حل مشكلة الـ Overflow
+      body: SingleChildScrollView(
+        // ✅ حل مشكلة الـ Overflow
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Padding(
           padding: EdgeInsets.only(top: 50, right: 20, left: 20),
@@ -70,7 +71,9 @@ class LoginScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 GestureDetector(
-                  onTap: () {Get.to(ChangePasswordScreen());},
+                  onTap: () {
+                    Get.to(ChangePasswordScreen());
+                  },
                   child: CustomTextWidget(
                     txtAlign: TextAlign.right,
                     txt: "Forget Password?",
@@ -86,7 +89,6 @@ class LoginScreen extends StatelessWidget {
                         emailController.text.trim(),
                         passwordController.text.trim(),
                       );
-
                     }
                   },
                   color: Color(0xffFFE70C),
@@ -98,7 +100,10 @@ class LoginScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       text: "Don't have an account?  ",
-                      style: TextStyle(fontSize: 16, fontFamily: "Lato", color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: "Lato",
+                          color: Colors.white),
                       children: [
                         TextSpan(
                           text: "Create Here",
@@ -108,15 +113,17 @@ class LoginScreen extends StatelessWidget {
                             color: Colors.white,
                             decoration: TextDecoration.underline,
                           ),
-                          recognizer: TapGestureRecognizer()..onTap = () {
-                            Get.to(SignUpScreen());
-                          },
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Get.to(SignUpScreen());
+                            },
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 20), // ✅ أضفت مسافة لتجنب الالتصاق بأسفل الشاشة
+                SizedBox(
+                    height: 20), // ✅ أضفت مسافة لتجنب الالتصاق بأسفل الشاشة
               ],
             ),
           ),

@@ -81,26 +81,35 @@ class _SavedAddressesScreenState extends State<SavedAddressesScreen> {
               return Card(
                 color: Colors.white10,
                 margin: const EdgeInsets.symmetric(vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
                 child: Directionality(
-                  textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+                  textDirection:
+                      isArabic ? TextDirection.rtl : TextDirection.ltr,
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(16),
                     title: Text(
-                      address['country'] ?? (isArabic ? "غير متوفر" : "Not available"),
+                      address['country'] ??
+                          (isArabic ? "غير متوفر" : "Not available"),
                       style: const TextStyle(
-                          color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          address['city'] ?? (isArabic ? "غير متوفر" : "Not available"),
-                          style: const TextStyle(color: Colors.white70, fontSize: 14),
+                          address['city'] ??
+                              (isArabic ? "غير متوفر" : "Not available"),
+                          style: const TextStyle(
+                              color: Colors.white70, fontSize: 14),
                         ),
                         Text(
-                          address['address'] ?? (isArabic ? "غير متوفر" : "Not available"),
-                          style: const TextStyle(color: Colors.white70, fontSize: 16),
+                          address['address'] ??
+                              (isArabic ? "غير متوفر" : "Not available"),
+                          style: const TextStyle(
+                              color: Colors.white70, fontSize: 16),
                         ),
                       ],
                     ),

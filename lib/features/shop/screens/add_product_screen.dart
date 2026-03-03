@@ -58,7 +58,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final List<int> promotionDaysOptions = [1, 3, 7, 14, 30];
 
   final PaymobService _paymobService =
-  PaymobService(apiKey: APIKey.PaymobApiKey);
+      PaymobService(apiKey: APIKey.PaymobApiKey);
 
   Future<void> pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
@@ -153,9 +153,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
         'isPromoted': isPromoted,
         'promotionDays': isPromoted ? promotionDays : null,
         'startPrice':
-        isAuction ? double.tryParse(startingPriceController.text) ?? 0 : 0,
+            isAuction ? double.tryParse(startingPriceController.text) ?? 0 : 0,
         'bidIncrement':
-        isAuction ? double.tryParse(bidIncrementController.text) ?? 0 : 0,
+            isAuction ? double.tryParse(bidIncrementController.text) ?? 0 : 0,
         'maxPrice': isAuction
             ? double.tryParse(startingPriceController.text) ?? 0
             : double.tryParse(maxPriceController.text) ?? 0,
@@ -229,7 +229,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       print("Payment Key: $paymentKey");
 
       bool? paymentSuccess = await Get.to(
-            () => PaymentScreen(
+        () => PaymentScreen(
           amount: amount,
           paymentKey: paymentKey,
           productIds: [],
@@ -298,9 +298,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
             _buildTextField(descriptionController, "Description",
                 isMultiLine: true),
             _buildDropdown("Condition", conditions, condition,
-                    (newValue) => setState(() => condition = newValue!)),
+                (newValue) => setState(() => condition = newValue!)),
             _buildDropdown("Category", categories, category,
-                    (newValue) => setState(() => category = newValue!)),
+                (newValue) => setState(() => category = newValue!)),
             SwitchListTile(
               title: const Text("Is this product an auction?"),
               value: isAuction,
@@ -313,7 +313,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   isNumber: true),
               SizedBox(height: 10),
               _buildDropdown("Auction Duration", durations, auctionDuration,
-                      (newValue) => setState(() => auctionDuration = newValue!)),
+                  (newValue) => setState(() => auctionDuration = newValue!)),
             ] else ...[
               _buildTextField(maxPriceController, "Max Price", isNumber: true),
             ],
@@ -340,7 +340,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 "Select Promotion Days",
                 promotionDaysOptions.map((days) => "$days days").toList(),
                 promotionDays != null ? "$promotionDays days" : null,
-                    (newValue) {
+                (newValue) {
                   setState(() {
                     promotionDays =
                         int.parse(newValue!.replaceAll(" days", ""));
@@ -365,7 +365,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                 ),
                 child: const Text("Add Product",
                     style: TextStyle(
@@ -432,8 +432,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   Widget _buildTextField(TextEditingController controller, String label,
       {bool isMultiLine = false,
-        bool required = false,
-        bool isNumber = false}) {
+      bool required = false,
+      bool isNumber = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
@@ -481,7 +481,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           backgroundColor: Colors.black87,
           title: const Text("Success",
               style:
-              TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                  TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
           content: const Text("Product added successfully!",
               style: TextStyle(color: Colors.white)),
           actions: [
@@ -491,7 +491,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 Get.offAll(() => ShopHomeScreen());
               },
               child:
-              const Text("OK", style: TextStyle(color: Colors.blueAccent)),
+                  const Text("OK", style: TextStyle(color: Colors.blueAccent)),
             ),
           ],
         );
@@ -512,7 +512,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child:
-              const Text("OK", style: TextStyle(color: Colors.blueAccent)),
+                  const Text("OK", style: TextStyle(color: Colors.blueAccent)),
             ),
           ],
         );

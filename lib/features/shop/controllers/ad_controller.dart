@@ -20,13 +20,15 @@ class AdController extends GetxController {
       final fetchedAds = await AdService.fetchAds();
 
       for (var ad in fetchedAds) {
-        DateTime expirationDate = ad.timestamp.toDate().add(Duration(days: ad.duration));
+        DateTime expirationDate =
+            ad.timestamp.toDate().add(Duration(days: ad.duration));
         if (DateTime.now().isAfter(expirationDate)) {
           await AdService.deleteAd(ad.id); // ✅ استخدام id الصحيح
         }
       }
 
-      ads.assignAll(fetchedAds.where((ad) => DateTime.now().isBefore(ad.timestamp.toDate().add(Duration(days: ad.duration)))));
+      ads.assignAll(fetchedAds.where((ad) => DateTime.now()
+          .isBefore(ad.timestamp.toDate().add(Duration(days: ad.duration)))));
     } catch (e) {
       Get.snackbar("Error", "Failed to fetch ads: $e");
     } finally {
@@ -41,15 +43,15 @@ class AdController extends GetxController {
       String? adId = await AdService.addAd(newAd);
       if (adId != null) {
         final adWithId = Ad(
-          id: adId, // ✅ إضافة id الجديد
-          imageUrl: newAd.imageUrl,
-          title: newAd.title,
-          description: newAd.description,
-          duration: newAd.duration,
-          cost: newAd.cost,
-          timestamp: Timestamp.now(),
-          adUrl: newAd.adUrl// ✅ التأكد من أن timestamp غير null
-        );
+            id: adId, // ✅ إضافة id الجديد
+            imageUrl: newAd.imageUrl,
+            title: newAd.title,
+            description: newAd.description,
+            duration: newAd.duration,
+            cost: newAd.cost,
+            timestamp: Timestamp.now(),
+            adUrl: newAd.adUrl // ✅ التأكد من أن timestamp غير null
+            );
         ads.add(adWithId);
         update(); // تحديث الواجهة
       }
@@ -59,5 +61,4 @@ class AdController extends GetxController {
       isLoading(false);
     }
   }
-
 }

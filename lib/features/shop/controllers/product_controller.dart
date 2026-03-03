@@ -16,7 +16,7 @@ class ProductController extends GetxController {
     try {
       isLoading.value = true;
       QuerySnapshot querySnapshot =
-      await FirebaseFirestore.instance.collection('products').get();
+          await FirebaseFirestore.instance.collection('products').get();
       products.assignAll(querySnapshot.docs
           .map((doc) => ProductModel.fromFirestore(doc))
           .toList());
@@ -99,5 +99,4 @@ class ProductController extends GetxController {
           .update({'isFavourite': products[index].isFavourite});
     }
   }
-
 }

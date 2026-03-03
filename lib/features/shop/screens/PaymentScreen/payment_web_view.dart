@@ -76,7 +76,10 @@ class _PaymentWebViewState extends State<PaymentWebView> {
     print('Checking payment status with URL: $url');
     if (url.contains('success')) {
       _handleSuccessfulPayment();
-    } else if (url.contains('fail') || url.contains('error') || url.contains('declined') || url.contains('rejected')) {
+    } else if (url.contains('fail') ||
+        url.contains('error') ||
+        url.contains('declined') ||
+        url.contains('rejected')) {
       Navigator.pop(context, false);
     }
   }
@@ -91,7 +94,9 @@ class _PaymentWebViewState extends State<PaymentWebView> {
       print("❌ خطأ أثناء معالجة الدفع الناجح: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("حدث خطأ أثناء معالجة الدفع: $e"), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text("حدث خطأ أثناء معالجة الدفع: $e"),
+              backgroundColor: Colors.red),
         );
       }
       Navigator.pop(context, false);
@@ -101,8 +106,10 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   Future<void> _savePaymentData() async {
     try {
       String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
-      DocumentSnapshot paymentSettings =
-      await FirebaseFirestore.instance.collection('payment_settings').doc('keys').get();
+      DocumentSnapshot paymentSettings = await FirebaseFirestore.instance
+          .collection('payment_settings')
+          .doc('keys')
+          .get();
 
       if (!paymentSettings.exists) {
         throw Exception("Payment settings not found");
@@ -118,9 +125,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
         'timestamp': FieldValue.serverTimestamp(),
       };
 
-      await FirebaseFirestore.instance
-          .collection('payments')
-          .add(paymentData);
+      await FirebaseFirestore.instance.collection('payments').add(paymentData);
 
       print("✅ تم حفظ بيانات الدفع بنجاح");
     } catch (e) {
@@ -235,11 +240,13 @@ class _PaymentWebViewState extends State<PaymentWebView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, size: 50, color: Colors.red),
+                    const Icon(Icons.error_outline,
+                        size: 50, color: Colors.red),
                     const SizedBox(height: 16),
                     const Text(
                       "فشل تحميل صفحة الدفع",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -257,7 +264,8 @@ class _PaymentWebViewState extends State<PaymentWebView> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF4A6FA5),
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
                       ),
                       child: const Text(
                         "إعادة المحاولة",

@@ -74,38 +74,51 @@ class _AddCardScreenState extends State<AddCardScreen> {
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: "Card Number", filled: true, fillColor: Colors.white10),
+                decoration: InputDecoration(
+                    labelText: "Card Number",
+                    filled: true,
+                    fillColor: Colors.white10),
                 keyboardType: TextInputType.number,
                 maxLength: 16,
                 validator: (value) {
-                  if (value == null || value.isEmpty) return "Enter card number";
-                  if (!RegExp(r'^\d{16}$').hasMatch(value.trim())) return "Enter a valid 16-digit card number";
+                  if (value == null || value.isEmpty)
+                    return "Enter card number";
+                  if (!RegExp(r'^\d{16}$').hasMatch(value.trim()))
+                    return "Enter a valid 16-digit card number";
                   return null;
                 },
                 onChanged: (value) => cardNumber = value,
               ),
               SizedBox(height: 10),
-
               TextFormField(
-                decoration: InputDecoration(labelText: "Cardholder Name", filled: true, fillColor: Colors.white10),
+                decoration: InputDecoration(
+                    labelText: "Cardholder Name",
+                    filled: true,
+                    fillColor: Colors.white10),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return "Enter cardholder name";
-                  if (!RegExp(r'^[a-zA-Z\u0600-\u06FF ]+$').hasMatch(value.trim())) return "Enter a valid name";
+                  if (value == null || value.isEmpty)
+                    return "Enter cardholder name";
+                  if (!RegExp(r'^[a-zA-Z\u0600-\u06FF ]+$')
+                      .hasMatch(value.trim())) return "Enter a valid name";
                   return null;
                 },
                 onChanged: (value) => cardholderName = value,
               ),
               SizedBox(height: 10),
-
               TextFormField(
-                decoration: InputDecoration(labelText: "Expiry Date (MM/YY)", filled: true, fillColor: Colors.white10),
+                decoration: InputDecoration(
+                    labelText: "Expiry Date (MM/YY)",
+                    filled: true,
+                    fillColor: Colors.white10),
                 keyboardType: TextInputType.datetime,
                 validator: (value) {
-                  if (value == null || value.isEmpty) return "Enter expiry date";
+                  if (value == null || value.isEmpty)
+                    return "Enter expiry date";
 
                   // التحقق من الصيغة MM/YY
                   RegExp regex = RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$');
-                  if (!regex.hasMatch(value.trim())) return "Enter valid MM/YY format";
+                  if (!regex.hasMatch(value.trim()))
+                    return "Enter valid MM/YY format";
 
                   // استخراج الشهر والسنة
                   List<String> parts = value.split('/');
@@ -118,7 +131,8 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   int currentMonth = now.month;
 
                   // التحقق من أن البطاقة لم تنتهِ صلاحيتها
-                  if (year < currentYear || (year == currentYear && month < currentMonth)) {
+                  if (year < currentYear ||
+                      (year == currentYear && month < currentMonth)) {
                     return "Card has expired";
                   }
 
@@ -127,21 +141,21 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 onChanged: (value) => expiryDate = value,
               ),
               SizedBox(height: 10),
-
               TextFormField(
-                decoration: InputDecoration(labelText: "CVV", filled: true, fillColor: Colors.white10),
+                decoration: InputDecoration(
+                    labelText: "CVV", filled: true, fillColor: Colors.white10),
                 keyboardType: TextInputType.number,
                 maxLength: 4,
                 obscureText: true, // ✅ إخفاء الـ CVV عند الإدخال
                 validator: (value) {
                   if (value == null || value.isEmpty) return "Enter CVV";
-                  if (!RegExp(r'^\d{3,4}$').hasMatch(value.trim())) return "Enter valid CVV";
+                  if (!RegExp(r'^\d{3,4}$').hasMatch(value.trim()))
+                    return "Enter valid CVV";
                   return null;
                 },
                 onChanged: (value) => cvv = value,
               ),
               SizedBox(height: 20),
-
               ElevatedButton(
                 onPressed: _saveCard,
                 style: ElevatedButton.styleFrom(

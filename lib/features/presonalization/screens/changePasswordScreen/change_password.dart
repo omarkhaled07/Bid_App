@@ -19,15 +19,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       String email = emailController.text.trim();
 
       if (email.isEmpty) {
-        Get.snackbar("Error", "Please enter your email", backgroundColor: Colors.red, colorText: Colors.white);
+        Get.snackbar("Error", "Please enter your email",
+            backgroundColor: Colors.red, colorText: Colors.white);
         return;
       }
 
       await _auth.sendPasswordResetEmail(email: email);
 
-      Get.snackbar("Success", "Password reset email sent to $email", backgroundColor: Colors.green, colorText: Colors.white);
+      Get.snackbar("Success", "Password reset email sent to $email",
+          backgroundColor: Colors.green, colorText: Colors.white);
       print("✅ Password reset email sent to $email");
-
     } on FirebaseAuthException catch (e) {
       print("❌ Firebase Error: ${e.code}");
       String errorMessage = "Failed to send email.";
@@ -38,10 +39,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         errorMessage = "No account found for this email.";
       }
 
-      Get.snackbar("Error", errorMessage, backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar("Error", errorMessage,
+          backgroundColor: Colors.red, colorText: Colors.white);
     } catch (e) {
       print("❌ Unexpected Error: $e");
-      Get.snackbar("Error", "Something went wrong. Try again.", backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar("Error", "Something went wrong. Try again.",
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 
@@ -49,7 +52,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff080618),
-      appBar: AppBar(title: Text("Reset Password"), backgroundColor: Colors.black),
+      appBar:
+          AppBar(title: Text("Reset Password"), backgroundColor: Colors.black),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

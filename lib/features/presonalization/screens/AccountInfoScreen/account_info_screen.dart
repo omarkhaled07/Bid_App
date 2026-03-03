@@ -38,14 +38,16 @@ class AccountInfoScreen extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Row(
         children: [
-
           IconButton(
-            icon: const Icon(
-                Icons.arrow_back_ios_new, color: Colors.black, size: 28),
+            icon: const Icon(Icons.arrow_back_ios_new,
+                color: Colors.black, size: 28),
             onPressed: () => Navigator.pop(context),
           ),
-          SizedBox(width: 20,),
-          CustomTextWidget(txt: "Account Info",
+          SizedBox(
+            width: 20,
+          ),
+          CustomTextWidget(
+              txt: "Account Info",
               txtsize: 18,
               txtColor: Colors.black,
               txtAlign: TextAlign.center)
@@ -74,7 +76,7 @@ class AccountInfoScreen extends StatelessWidget {
               userData['profileImage'] ?? "https://via.placeholder.com/150",
             ),
             onBackgroundImageError: (_, __) =>
-            const Icon(Icons.person, size: 48, color: Colors.white),
+                const Icon(Icons.person, size: 48, color: Colors.white),
           ),
         ),
       ),
@@ -116,7 +118,8 @@ class AccountInfoScreen extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             "$label:",
-            style: const TextStyle(fontSize: 16,
+            style: const TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFFE0E0E0)), // ✅ لون نص أفتح
           ),
@@ -124,7 +127,8 @@ class AccountInfoScreen extends StatelessWidget {
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(fontSize: 16,
+              style: const TextStyle(
+                  fontSize: 16,
                   color: Color(0xFFC0C0C0)), // ✅ لون نص رمادي فاتح
             ),
           ),
@@ -141,8 +145,8 @@ class AccountInfoScreen extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFFFE70C), // ✅ لون زر التعديل
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           onPressed: () => Get.to(() => EditProfileScreen()),
@@ -161,8 +165,8 @@ class AccountInfoScreen extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFFFFE70C), // ✅ لون زر تسجيل الخروج
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           onPressed: () async {

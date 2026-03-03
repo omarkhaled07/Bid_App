@@ -9,11 +9,14 @@ class DashedBorderPainter extends CustomPainter {
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
-    final path = Path()..addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(12)));
+    final path = Path()
+      ..addRRect(RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(12)));
 
     final dashedPath = dashPath(
       path,
-      dashArray: CircularIntervalList([6, 4]), // تحديد الطول والمسافة بين الشرطات
+      dashArray:
+          CircularIntervalList([6, 4]), // تحديد الطول والمسافة بين الشرطات
     );
 
     canvas.drawPath(dashedPath, paint);

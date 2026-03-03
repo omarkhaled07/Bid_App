@@ -19,8 +19,10 @@ class _PromotedProductsScreenState extends State<PromotedProductsScreen> {
 
   List<ProductModel> get filteredProducts {
     return widget.promotedProducts.where((product) {
-      final categoryMatch = selectedCategory == null || product.category == selectedCategory;
-      final statusMatch = selectedStatus == null || product.status == selectedStatus;
+      final categoryMatch =
+          selectedCategory == null || product.category == selectedCategory;
+      final statusMatch =
+          selectedStatus == null || product.status == selectedStatus;
       return categoryMatch && statusMatch;
     }).toList();
   }
@@ -81,7 +83,8 @@ class _PromotedProductsScreenState extends State<PromotedProductsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(12)),
                     child: Image.network(
                       product.imageUrl,
                       height: 200,

@@ -1,16 +1,78 @@
-# bid_app
+# Bid app
 
-A new Flutter project.
+Flutter + Firebase mobile app.
 
-## Getting Started
+## Release Metadata
 
-This project is a starting point for a Flutter application.
+- iOS Bundle Identifier: `com.app.bid`
+- App Display Name: `Bid app`
+- Version Name: `1.0.0`
+- Build Number: `1`
 
-A few resources to get you started if this is your first Flutter project:
+## Baseline Commands
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+flutter --version
+flutter pub get
+dart format .
+flutter analyze
+flutter test
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## iOS Release Prep
+
+1. Ensure macOS + Xcode are available (iOS builds cannot run on Windows).
+2. Install CocoaPods:
+   - `sudo gem install cocoapods` (or Homebrew equivalent)
+3. Run:
+   - `cd ios && pod install && cd ..`
+4. Validate release compile:
+   - `flutter clean`
+   - `flutter pub get`
+   - `flutter build ios --release --no-codesign`
+
+## Firebase iOS Requirements
+
+1. Add `ios/Runner/GoogleService-Info.plist` for iOS app id `com.app.bid`.
+2. Regenerate FlutterFire config after changing bundle id:
+   - `flutterfire configure --platforms=ios,android,web`
+3. Verify Crashlytics dSYM upload in Xcode build phase after adding Crashlytics SDK.
+4. If push notifications are used:
+   - Enable Push Notifications capability in Runner target.
+   - Enable Background Modes > Remote notifications.
+   - Upload APNs key in Firebase Console.
+
+## TestFlight Upload
+
+### Option A: Xcode
+
+1. Open `ios/Runner.xcworkspace`.
+2. Select `Runner` target and set Signing Team (Automatic Signing).
+3. Product > Archive.
+4. Validate archive.
+5. Distribute App > App Store Connect > TestFlight.
+
+### Option B: Fastlane (recommended)
+
+Add lanes in `ios/fastlane/Fastfile`:
+
+- `lint_test`: run `flutter analyze` and `flutter test`
+- `build_ios`: run `flutter build ios --release --no-codesign`
+- `beta`: upload build to TestFlight (`pilot`)
+
+Required env vars:
+
+- `APP_STORE_CONNECT_API_KEY_ID`
+- `APP_STORE_CONNECT_ISSUER_ID`
+- `APP_STORE_CONNECT_API_KEY_CONTENT`
+
+## App Store Connect Checklist
+
+- Privacy Policy URL: `{PRIVACY_POLICY_URL}`
+- Support URL: `{SUPPORT_URL}`
+- Demo account credentials: `{DEMO_LOGIN}`
+- App description + keywords
+- Screenshots for all required device sizes
+- 1024x1024 app icon
+- Reviewer notes with any special login/payment steps
+

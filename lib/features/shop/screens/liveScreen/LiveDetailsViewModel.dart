@@ -7,7 +7,8 @@ class LiveDetailsViewModel extends ChangeNotifier {
   final LiveKitService _liveKitService;
   final bool isHost;
 
-  LiveDetailsViewModel({required this.isHost}) : _liveKitService = LiveKitService();
+  LiveDetailsViewModel({required this.isHost})
+      : _liveKitService = LiveKitService();
 
   bool _isLoading = true;
   bool get isLoading => _isLoading;
@@ -16,7 +17,8 @@ class LiveDetailsViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   LocalVideoTrack? get localVideoTrack => _liveKitService.localVideoTrack;
-  List<RemoteParticipant> get remoteParticipants => _liveKitService.remoteParticipants;
+  List<RemoteParticipant> get remoteParticipants =>
+      _liveKitService.remoteParticipants;
   Stream<int> get viewerCountStream => _liveKitService.viewerCountStream;
 
   Future<void> connectToRoom({

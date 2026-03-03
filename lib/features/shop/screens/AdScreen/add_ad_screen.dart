@@ -30,7 +30,8 @@ class AddAdScreen extends StatelessWidget {
       "POST",
       Uri.parse("https://api.imgbb.com/1/upload?key=$apiKey"),
     );
-    request.files.add(await http.MultipartFile.fromPath("image", imageFile.path));
+    request.files
+        .add(await http.MultipartFile.fromPath("image", imageFile.path));
 
     var response = await request.send();
     var responseData = await response.stream.bytesToString();
@@ -63,8 +64,10 @@ class AddAdScreen extends StatelessWidget {
 
   Future<String?> _fetchPaymobApiKey() async {
     try {
-      DocumentSnapshot paymentSettings =
-      await FirebaseFirestore.instance.collection('payment_settings').doc('keys').get();
+      DocumentSnapshot paymentSettings = await FirebaseFirestore.instance
+          .collection('payment_settings')
+          .doc('keys')
+          .get();
       if (paymentSettings.exists) {
         return paymentSettings['PaymobApiKey'] as String?;
       }
@@ -91,10 +94,10 @@ class AddAdScreen extends StatelessWidget {
     List<String> productIds = [];
 
     bool? paymentSuccess = await Get.to(() => PaymentScreen(
-      amount: amount,
-      paymentKey: paymentKey,
-      productIds: productIds,
-    ));
+          amount: amount,
+          paymentKey: paymentKey,
+          productIds: productIds,
+        ));
 
     if (paymentSuccess == true) {
       final newAd = Ad(
@@ -134,39 +137,45 @@ class AddAdScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 _buildTextField(_descriptionController, "Description"),
                 SizedBox(height: 20),
-                _buildTextField(_durationController, "Duration (days)", isNumber: true),
+                _buildTextField(_durationController, "Duration (days)",
+                    isNumber: true),
                 SizedBox(height: 20),
                 _buildTextField(_adUrlController, "Ad URL"),
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: _pickImage,
                   child: Obx(() => Container(
-                    width: double.infinity,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.white),
-                    ),
-                    child: _imageFile.value == null
-                        ? Center(child: Text("Tap to add an image", style: TextStyle(color: Colors.white)))
-                        : ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        _imageFile.value!,
-                        fit: BoxFit.cover,
                         width: double.infinity,
                         height: 200,
-                      ),
-                    ),
-                  )),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[800],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.white),
+                        ),
+                        child: _imageFile.value == null
+                            ? Center(
+                                child: Text("Tap to add an image",
+                                    style: TextStyle(color: Colors.white)))
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.file(
+                                  _imageFile.value!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 200,
+                                ),
+                              ),
+                      )),
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      if (_imageUrl.value.isEmpty || _imageUrl.value == "Uploading...") {
-                        Get.snackbar("Error", "Please wait for the image to upload!", backgroundColor: Colors.red);
+                      if (_imageUrl.value.isEmpty ||
+                          _imageUrl.value == "Uploading...") {
+                        Get.snackbar(
+                            "Error", "Please wait for the image to upload!",
+                            backgroundColor: Colors.red);
                         return;
                       }
 
@@ -195,7 +204,8 @@ class AddAdScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, {bool isNumber = false}) {
+  Widget _buildTextField(TextEditingController controller, String label,
+      {bool isNumber = false}) {
     return TextFormField(
       controller: controller,
       keyboardType: isNumber ? TextInputType.number : TextInputType.text,
@@ -212,7 +222,8 @@ class AddAdScreen extends StatelessWidget {
         if (value == null || value.isEmpty) {
           return "Please enter $label";
         }
-        if (isNumber && (int.tryParse(value) == null || int.parse(value) <= 0)) {
+        if (isNumber &&
+            (int.tryParse(value) == null || int.parse(value) <= 0)) {
           return "Enter a valid number";
         }
         return null;

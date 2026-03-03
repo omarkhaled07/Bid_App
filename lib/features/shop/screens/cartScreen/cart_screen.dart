@@ -33,8 +33,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
   Future<void> _loadUserData() async {
     try {
-      DocumentSnapshot userDoc =
-      await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
       if (userDoc.exists) {
         setState(() {
           name = userDoc['name'] ?? "No Name";
@@ -75,8 +77,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
   Future<String?> _fetchPaymobApiKey() async {
     try {
-      DocumentSnapshot paymentSettings =
-      await FirebaseFirestore.instance.collection('payment_settings').doc('keys').get();
+      DocumentSnapshot paymentSettings = await FirebaseFirestore.instance
+          .collection('payment_settings')
+          .doc('keys')
+          .get();
       if (paymentSettings.exists) {
         return paymentSettings['PaymobApiKey'] as String?;
       }
@@ -103,7 +107,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
           var cartItems = snapshot.data!.docs;
           double totalPrice = cartItems.fold(
-              0, (sum, item) => sum + ((item['price'] ?? 0) * (item['quantity'] ?? 1)));
+              0,
+              (sum, item) =>
+                  sum + ((item['price'] ?? 0) * (item['quantity'] ?? 1)));
 
           List<String> productIds = cartItems
               .map((item) => item['productId'] as String)
@@ -120,7 +126,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     String docId = cartItems[index].id;
 
                     return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
@@ -160,16 +167,20 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                   Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () => _updateQuantity(docId, (item['quantity'] ?? 1) - 1),
-                                        icon: const Icon(Icons.remove_circle_outline),
+                                        onPressed: () => _updateQuantity(
+                                            docId, (item['quantity'] ?? 1) - 1),
+                                        icon: const Icon(
+                                            Icons.remove_circle_outline),
                                       ),
                                       Text(
                                         "${item['quantity'] ?? 1}",
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       IconButton(
-                                        onPressed: () => _updateQuantity(docId, (item['quantity'] ?? 1) + 1),
-                                        icon: const Icon(Icons.add_circle_outline),
+                                        onPressed: () => _updateQuantity(
+                                            docId, (item['quantity'] ?? 1) + 1),
+                                        icon: const Icon(
+                                            Icons.add_circle_outline),
                                       ),
                                     ],
                                   ),
@@ -200,11 +211,17 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                       children: [
                         const Text(
                           "Total:",
-                          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "\$${totalPrice.toStringAsFixed(2)}",
-                          style: const TextStyle(color: Colors.green, fontSize: 22, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              color: Colors.green,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -225,20 +242,23 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                         }
 
                         Get.to(() => PaymentScreen(
-                          amount: totalPrice,
-                          paymentKey: paymentKey,
-                          productIds: productIds,
-                        ));
+                              amount: totalPrice,
+                              paymentKey: paymentKey,
+                              productIds: productIds,
+                            ));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 60),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 60),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
                       child: isLoadingUser
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text("Proceed to Checkout", style: TextStyle(fontSize: 18)),
+                          : const Text("Proceed to Checkout",
+                              style: TextStyle(fontSize: 18)),
                     ),
                   ],
                 ),

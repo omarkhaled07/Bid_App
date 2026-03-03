@@ -125,10 +125,13 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
   Widget _buildProductGrid() {
     return Obx(() {
       if (productController.isLoading.value) {
-        return Center(child: CircularProgressIndicator(color: Color(0xffFFE70C)));
+        return Center(
+            child: CircularProgressIndicator(color: Color(0xffFFE70C)));
       }
       if (productController.products.isEmpty) {
-        return Center(child: Text("No products available", style: TextStyle(color: Colors.white)));
+        return Center(
+            child: Text("No products available",
+                style: TextStyle(color: Colors.white)));
       }
       final displayedProducts = productController.products.take(6).toList();
       return GridView.builder(
@@ -147,20 +150,22 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
           return GestureDetector(
             onTap: () {
               Get.to(() => ProductDescriptionScreen(
-                productId: product.id,
-                onFavoriteToggle: (isFavorite) {
-                  product.isFavourite = isFavorite;
-                  productController.products.refresh();
-                },
-              ));
+                    productId: product.id,
+                    onFavoriteToggle: (isFavorite) {
+                      product.isFavourite = isFavorite;
+                      productController.products.refresh();
+                    },
+                  ));
             },
             child: Stack(
               children: [
                 ProductGridItem(
                   imageUrl: product.imageUrl,
                   title: product.title,
-                  maxPrice: product.maxPrice.toString() ?? '0', // استخدام maxPrice فقط
-                  startingPrice: product.startPrice.toString() ?? '0', // استخدام maxPrice فقط
+                  maxPrice: product.maxPrice.toString() ??
+                      '0', // استخدام maxPrice فقط
+                  startingPrice: product.startPrice.toString() ??
+                      '0', // استخدام maxPrice فقط
                   endTime: product.endTime,
                   isFavorite: product.isFavourite,
                   isOngoing: product.isSold,
@@ -179,17 +184,19 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: product.isFavourite ? Colors.orangeAccent : Colors.white,
+                        color: product.isFavourite
+                            ? Colors.orangeAccent
+                            : Colors.white,
                       ),
                       child: Icon(
                         Icons.favorite_border_outlined,
-                        color: product.isFavourite ? Colors.white : Colors.black,
+                        color:
+                            product.isFavourite ? Colors.white : Colors.black,
                         size: 16,
                       ),
                     ),
                   ),
                 ),
-
               ],
             ),
           );
@@ -249,12 +256,14 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                     final promotedProducts = productController.products
                         .where((product) => product.isPromoted)
                         .toList();
-                    Get.to(() => PromotedProductsScreen(promotedProducts: promotedProducts));
+                    Get.to(() => PromotedProductsScreen(
+                        promotedProducts: promotedProducts));
                   } else {
                     final nonPromotedProducts = productController.products
                         .where((product) => !product.isPromoted)
                         .toList();
-                    Get.to(() => NonPromotedProductsScreen(nonPromotedProducts: nonPromotedProducts));
+                    Get.to(() => NonPromotedProductsScreen(
+                        nonPromotedProducts: nonPromotedProducts));
                   }
                 },
                 child: Text(
@@ -267,7 +276,8 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
         const SizedBox(height: 8),
         Text(
           subtitle,
-          style: TextStyle(fontSize: 16, color: Color(0xffDADADA).withOpacity(0.8)),
+          style: TextStyle(
+              fontSize: 16, color: Color(0xffDADADA).withOpacity(0.8)),
         ),
         const SizedBox(height: 45),
       ],
@@ -279,11 +289,16 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
       height: 350,
       child: Obx(() {
         if (productController.isLoading.value) {
-          return Center(child: CircularProgressIndicator(color: Color(0xffFFE70C)));
+          return Center(
+              child: CircularProgressIndicator(color: Color(0xffFFE70C)));
         }
-        final promotedProducts = productController.products.where((product) => product.isPromoted).toList();
+        final promotedProducts = productController.products
+            .where((product) => product.isPromoted)
+            .toList();
         if (promotedProducts.isEmpty) {
-          return Center(child: Text("No promoted products available", style: TextStyle(color: Colors.white)));
+          return Center(
+              child: Text("No promoted products available",
+                  style: TextStyle(color: Colors.white)));
         }
         return PageView.builder(
           controller: _pageController,
@@ -295,12 +310,15 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
             bool isActive = index == _selectedIndex;
             return AnimatedPadding(
               duration: Duration(milliseconds: 300),
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: isActive ? 0 : 10),
+              padding: EdgeInsets.symmetric(
+                  horizontal: 8, vertical: isActive ? 0 : 10),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProductDescriptionScreen(productId: product.id)),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDescriptionScreen(productId: product.id)),
                   );
                 },
                 child: Transform.scale(
@@ -317,12 +335,14 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
 
   Widget _buildCarouselIndicator() {
     return Obx(() {
-      final promotedProducts = productController.products.where((product) => product.isPromoted).toList();
+      final promotedProducts = productController.products
+          .where((product) => product.isPromoted)
+          .toList();
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(
           promotedProducts.length,
-              (index) => Container(
+          (index) => Container(
             width: 8,
             height: 8,
             margin: EdgeInsets.symmetric(horizontal: 4),
@@ -342,7 +362,8 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
 
     return Obx(() {
       if (adController.isLoading.value) {
-        return Center(child: CircularProgressIndicator(color: Color(0xffFFE70C)));
+        return Center(
+            child: CircularProgressIndicator(color: Color(0xffFFE70C)));
       }
       return Column(
         children: [
@@ -354,21 +375,27 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                   child: PageView.builder(
                     controller: pageController,
                     padEnds: false,
-                    onPageChanged: (index) => setState(() => currentAdIndex = index),
+                    onPageChanged: (index) =>
+                        setState(() => currentAdIndex = index),
                     itemCount: adController.ads.length,
                     itemBuilder: (context, index) {
                       final ad = adController.ads[index];
                       return GestureDetector(
                         onTap: () {
-                          if (ad.adUrl.isNotEmpty) launchUrl(Uri.parse(ad.adUrl));
+                          if (ad.adUrl.isNotEmpty)
+                            launchUrl(Uri.parse(ad.adUrl));
                         },
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 300),
-                          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
-                              BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10, offset: Offset(0, 5)),
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5)),
                             ],
                           ),
                           child: ClipRRect(
@@ -379,16 +406,21 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                                 CachedNetworkImage(
                                   imageUrl: ad.imageUrl,
                                   fit: BoxFit.cover,
-                                  placeholder: (context, url) =>
-                                      Center(child: CircularProgressIndicator(color: Color(0xffFFE70C))),
-                                  errorWidget: (context, url, error) => Icon(Icons.error, color: Colors.red),
+                                  placeholder: (context, url) => Center(
+                                      child: CircularProgressIndicator(
+                                          color: Color(0xffFFE70C))),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error, color: Colors.red),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       begin: Alignment.bottomCenter,
                                       end: Alignment.topCenter,
-                                      colors: [Colors.black.withOpacity(0.7), Colors.transparent],
+                                      colors: [
+                                        Colors.black.withOpacity(0.7),
+                                        Colors.transparent
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -396,13 +428,20 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                                   padding: const EdgeInsets.all(16),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(ad.title,
-                                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
                                       SizedBox(height: 8),
                                       Text(ad.description,
-                                          style: TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.9))),
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white
+                                                  .withOpacity(0.9))),
                                     ],
                                   ),
                                 ),
@@ -419,13 +458,15 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     adController.ads.length,
-                        (index) => Container(
+                    (index) => Container(
                       width: 8,
                       height: 8,
                       margin: EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: currentAdIndex == index ? Color(0xffFFE70C) : Colors.grey,
+                        color: currentAdIndex == index
+                            ? Color(0xffFFE70C)
+                            : Colors.grey,
                       ),
                     ),
                   ),
@@ -449,10 +490,16 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
       ),
       child: Column(
         children: [
-          Text("Add your ad now!", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
+          Text("Add your ad now!",
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
           Text("Add your ad now and reach thousands of users!",
-              style: TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.8)), textAlign: TextAlign.center),
+              style:
+                  TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.8)),
+              textAlign: TextAlign.center),
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => Get.to(() => AddAdScreen()),
@@ -460,7 +507,11 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
               backgroundColor: Color(0xffFFE70C),
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
-            child: Text("Add New Ad", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold)),
+            child: Text("Add New Ad",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -487,16 +538,23 @@ class ExternalAdItem extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.network(ad.imageUrl, height: 120, width: double.infinity, fit: BoxFit.cover),
+              child: Image.network(ad.imageUrl,
+                  height: 120, width: double.infinity, fit: BoxFit.cover),
             ),
             Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(ad.title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                  Text(ad.title,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white)),
                   SizedBox(height: 8),
-                  Text(ad.description, style: TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.8))),
+                  Text(ad.description,
+                      style: TextStyle(
+                          fontSize: 14, color: Colors.white.withOpacity(0.8))),
                 ],
               ),
             ),

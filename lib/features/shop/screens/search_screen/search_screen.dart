@@ -69,8 +69,8 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       searchResults = _productController.products
           .where((product) =>
-      product.title.toLowerCase().contains(query.toLowerCase()) ||
-          product.description.toLowerCase().contains(query.toLowerCase()))
+              product.title.toLowerCase().contains(query.toLowerCase()) ||
+              product.description.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -158,7 +158,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     final product = searchResults[index];
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => ProductDescriptionScreen(productId: product.id,));
+                        Get.to(() => ProductDescriptionScreen(
+                              productId: product.id,
+                            ));
                       },
                       child: ListTile(
                         title: Text(
@@ -180,7 +182,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   },
                 ),
               ),
-
           ],
         ),
       ),

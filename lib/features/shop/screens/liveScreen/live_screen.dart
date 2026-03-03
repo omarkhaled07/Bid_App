@@ -75,7 +75,8 @@ class _LivePageState extends State<LivePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Live Streaming", style: TextStyle(color: Colors.white)),
+        title:
+            const Text("Live Streaming", style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xff080618),
       ),
       body: Stack(
@@ -84,11 +85,17 @@ class _LivePageState extends State<LivePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.live_tv, size: 80, color: isLive ? Colors.green : Colors.red),
+                Icon(Icons.live_tv,
+                    size: 80, color: isLive ? Colors.green : Colors.red),
                 const SizedBox(height: 20),
                 Text(
-                  isLive ? "Live streaming is active" : "No live stream currently",
-                  style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                  isLive
+                      ? "Live streaming is active"
+                      : "No live stream currently",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             ),
