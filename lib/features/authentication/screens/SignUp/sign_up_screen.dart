@@ -77,7 +77,7 @@ class SignUpScreen extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Obx(() => DropdownButtonFormField<String>(
-                            value: selectedCountryCode.value,
+                            initialValue: selectedCountryCode.value,
                             items: countryCodes.map((country) {
                               return DropdownMenuItem(
                                 value: country["code"],
@@ -134,7 +134,7 @@ class SignUpScreen extends StatelessWidget {
                 SizedBox(height: 10),
                 Obx(
                   () => DropdownButtonFormField<String>(
-                    value: userType.value,
+                    initialValue: userType.value,
                     items: ['Seller', 'Buyer']
                         .map((type) => DropdownMenuItem(
                               value: type,

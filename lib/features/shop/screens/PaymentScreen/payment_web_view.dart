@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
 
 class PaymentWebView extends StatefulWidget {
   final String paymentUrl;
@@ -73,7 +72,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   }
 
   void _checkPaymentStatus(String url) {
-    print('Checking payment status with URL: $url');
+    debugPrint('Checking payment status with URL: $url');
     if (url.contains('success')) {
       _handleSuccessfulPayment();
     } else if (url.contains('fail') ||
@@ -91,7 +90,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
 
       Navigator.pop(context, true);
     } catch (e) {
-      print("❌ خطأ أثناء معالجة الدفع الناجح: $e");
+      debugPrint("❌ خطأ أثناء معالجة الدفع الناجح: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -127,10 +126,10 @@ class _PaymentWebViewState extends State<PaymentWebView> {
 
       await FirebaseFirestore.instance.collection('payments').add(paymentData);
 
-      print("✅ تم حفظ بيانات الدفع بنجاح");
+      debugPrint("✅ تم حفظ بيانات الدفع بنجاح");
     } catch (e) {
-      print("❌ خطأ أثناء حفظ بيانات الدفع: $e");
-      throw e;
+      debugPrint("❌ خطأ أثناء حفظ بيانات الدفع: $e");
+      rethrow;
     }
   }
 
@@ -163,10 +162,10 @@ class _PaymentWebViewState extends State<PaymentWebView> {
         }
       }
 
-      print("✅ تم تحديث حالة المنتجات ومسح السلة بنجاح");
+      debugPrint("✅ تم تحديث حالة المنتجات ومسح السلة بنجاح");
     } catch (e) {
-      print("❌ خطأ أثناء تحديث حالة المنتجات: $e");
-      throw e;
+      debugPrint("❌ خطأ أثناء تحديث حالة المنتجات: $e");
+      rethrow;
     }
   }
 
@@ -195,7 +194,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) {
           final shouldPop = await _showExitConfirmation();
           if (shouldPop && context.mounted) {
@@ -232,7 +231,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
                 value: progress,
                 backgroundColor: Colors.grey[200],
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  const Color(0xFF4A6FA5).withOpacity(0.6),
+                  const Color(0xFF4A6FA5).withValues(alpha: 0.6),
                 ),
               ),
             if (hasError)

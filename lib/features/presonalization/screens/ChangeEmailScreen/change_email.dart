@@ -6,7 +6,7 @@ class ChangeEmailScreen extends StatefulWidget {
   const ChangeEmailScreen({super.key});
 
   @override
-  _ChangeEmailScreenState createState() => _ChangeEmailScreenState();
+  State<ChangeEmailScreen> createState() => _ChangeEmailScreenState();
 }
 
 class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
@@ -47,7 +47,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
           "Verification email sent! Please verify your new email before changing.",
           backgroundColor: Colors.green, colorText: Colors.white);
     } on FirebaseAuthException catch (e) {
-      print("\u274C Firebase Error: \${e.code} - \${e.message}");
+      debugPrint("\u274C Firebase Error: \${e.code} - \${e.message}");
       String errorMessage = "Failed to change email.";
 
       switch (e.code) {
@@ -72,7 +72,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
       Get.snackbar("Error", errorMessage,
           backgroundColor: Colors.red, colorText: Colors.white);
     } catch (e) {
-      print("\u274C Unexpected Error: \$e");
+      debugPrint("\u274C Unexpected Error: \$e");
       Get.snackbar("Error", "Something went wrong. Try again.",
           backgroundColor: Colors.red, colorText: Colors.white);
     } finally {

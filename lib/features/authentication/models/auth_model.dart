@@ -50,7 +50,7 @@ class CustomTxtFormField extends StatefulWidget {
       this.keyboardType});
 
   @override
-  _CustomTxtFormFieldState createState() => _CustomTxtFormFieldState();
+  State<CustomTxtFormField> createState() => _CustomTxtFormFieldState();
 }
 
 class _CustomTxtFormFieldState extends State<CustomTxtFormField> {

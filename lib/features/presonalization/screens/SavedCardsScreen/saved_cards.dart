@@ -8,7 +8,7 @@ class SavedCardsScreen extends StatefulWidget {
   const SavedCardsScreen({super.key});
 
   @override
-  _SavedCardsScreenState createState() => _SavedCardsScreenState();
+  State<SavedCardsScreen> createState() => _SavedCardsScreenState();
 }
 
 class _SavedCardsScreenState extends State<SavedCardsScreen> {

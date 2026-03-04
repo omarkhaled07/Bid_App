@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../authentication/models/auth_model.dart';
@@ -14,13 +13,12 @@ class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -78,11 +76,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (response.statusCode == 200) {
         return jsonResponse['data']['url']; // رابط الصورة المرفوعة
       } else {
-        print("❌ Error uploading image: ${jsonResponse['error']}");
+        debugPrint("❌ Error uploading image: ${jsonResponse['error']}");
         return null;
       }
     } catch (e) {
-      print("❌ Exception while uploading image: $e");
+      debugPrint("❌ Exception while uploading image: $e");
       return null;
     }
   }

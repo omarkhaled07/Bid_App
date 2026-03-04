@@ -52,7 +52,7 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
               height: 60,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
               ),
             ),
           Icon(icon, size: 28, color: isSelected ? Colors.yellow : Colors.grey),
@@ -62,3 +62,4 @@ class _CustomBottomNavState extends State<CustomBottomNav> {
     );
   }
 }
+

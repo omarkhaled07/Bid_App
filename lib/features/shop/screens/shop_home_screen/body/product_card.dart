@@ -18,11 +18,7 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
-    String daysText = widget.product.status ??
-        (widget.product.endTime != null &&
-                widget.product.endTime!.toDate().isAfter(DateTime.now())
-            ? _formatRemainingTime(widget.product.endTime!)
-            : (widget.product.isSold ? "Sold" : "Finished"));
+    String daysText = widget.product.status;
 
     return GestureDetector(
       onTap: () async {

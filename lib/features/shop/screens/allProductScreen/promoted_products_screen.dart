@@ -110,7 +110,7 @@ class _PromotedProductsScreenState extends State<PromotedProductsScreen> {
                           product.description,
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.white.withValues(alpha: 0.8),
                           ),
                         ),
                         SizedBox(height: 12),
@@ -134,3 +134,4 @@ class _PromotedProductsScreenState extends State<PromotedProductsScreen> {
     );
   }
 }
+

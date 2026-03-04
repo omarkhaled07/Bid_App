@@ -69,17 +69,13 @@ class LiveKitService {
   }
 
   void _onParticipantConnected(ParticipantConnectedEvent event) {
-    if (event.participant is RemoteParticipant) {
-      _remoteParticipants.add(event.participant as RemoteParticipant);
-      _updateViewerCount();
-    }
+    _remoteParticipants.add(event.participant);
+    _updateViewerCount();
   }
 
   void _onParticipantDisconnected(ParticipantDisconnectedEvent event) {
-    if (event.participant is RemoteParticipant) {
-      _remoteParticipants.remove(event.participant as RemoteParticipant);
-      _updateViewerCount();
-    }
+    _remoteParticipants.remove(event.participant);
+    _updateViewerCount();
   }
 
   void _onTrackPublished(TrackPublishedEvent event) {

@@ -8,7 +8,7 @@ class SavedAddressesScreen extends StatefulWidget {
   const SavedAddressesScreen({super.key});
 
   @override
-  _SavedAddressesScreenState createState() => _SavedAddressesScreenState();
+  State<SavedAddressesScreen> createState() => _SavedAddressesScreenState();
 }
 
 class _SavedAddressesScreenState extends State<SavedAddressesScreen> {

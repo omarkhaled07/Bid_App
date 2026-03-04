@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -34,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       String? uid = _auth.currentUser?.uid;
       if (uid == null) {
-        print("⚠️ No user logged in!");
+        debugPrint("⚠️ No user logged in!");
         return;
       }
 
@@ -42,12 +42,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           await _firestore.collection('users').doc(uid).get();
 
       if (!userDoc.exists) {
-        print("⚠️ User document does not exist!");
+        debugPrint("⚠️ User document does not exist!");
         return;
       }
 
       userData.value = userDoc.data() as Map<String, dynamic>;
-      print("✅ User data loaded: $userData");
+      debugPrint("✅ User data loaded: $userData");
 
       if (!userData.containsKey('uid')) {
         userData['uid'] = uid; // تعيين الـ UID إذا لم يكن موجودًا
@@ -57,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       followersCount.value = followers.length;
       isFollowing.value = followers.contains(uid);
     } catch (e) {
-      print("❌ Error fetching user data: $e");
+      debugPrint("❌ Error fetching user data: $e");
     }
   }
 
@@ -126,8 +126,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Obx(() => ElevatedButton.icon(
                     onPressed: () async {
-                      print("Current User ID: ${_auth.currentUser!.uid}");
-                      print("Profile User ID: ${userData['uid']}");
+                      debugPrint("Current User ID: ${_auth.currentUser!.uid}");
+                      debugPrint("Profile User ID: ${userData['uid']}");
 
                       if (userData['uid'] == null) {
                         Get.snackbar("Error", "User data is incomplete!",
@@ -163,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -248,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       String? profileUserId = userData['uid'];
 
       if (currentUserId == null || profileUserId == null) {
-        print("⚠️ User data is incomplete!");
+        debugPrint("⚠️ User data is incomplete!");
         Get.snackbar("Error", "User data is incomplete!",
             backgroundColor: Colors.red, colorText: Colors.white);
         return;
@@ -270,9 +270,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
 
       isFollowing.value = !isFollowing.value;
-      print("✅ Follow status updated successfully!");
+      debugPrint("✅ Follow status updated successfully!");
     } catch (e) {
-      print("❌ Error updating follow status: $e");
+      debugPrint("❌ Error updating follow status: $e");
     }
   }
 }

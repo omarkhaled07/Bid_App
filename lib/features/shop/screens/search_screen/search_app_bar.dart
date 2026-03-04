@@ -52,7 +52,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 6,
                     spreadRadius: 1,
                     offset: const Offset(0, 2),
@@ -93,7 +93,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             blurRadius: 6,
                             spreadRadius: 1,
                             offset: const Offset(0, 2),
@@ -113,3 +113,4 @@ class _SearchAppBarState extends State<SearchAppBar> {
     );
   }
 }
+

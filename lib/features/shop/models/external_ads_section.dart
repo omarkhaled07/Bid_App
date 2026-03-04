@@ -59,7 +59,7 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
+                                color: Colors.black.withValues(alpha: 0.3),
                                 blurRadius: 10,
                                 offset: Offset(0, 5),
                               ),
@@ -92,7 +92,7 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
                                       begin: Alignment.bottomCenter,
                                       end: Alignment.topCenter,
                                       colors: [
-                                        Colors.black.withOpacity(0.7),
+                                        Colors.black.withValues(alpha: 0.7),
                                         Colors.transparent,
                                       ],
                                     ),
@@ -119,7 +119,7 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
                                         ad.description,
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.white.withOpacity(0.9),
+                                          color: Colors.white.withValues(alpha: 0.9),
                                         ),
                                       ),
                                     ],
@@ -184,7 +184,7 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
             "Add your ad now and reach thousands of users!",
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.9),
             ),
             textAlign: TextAlign.center,
           ),
@@ -212,3 +212,6 @@ class _ExternalAdsSectionState extends State<ExternalAdsSection> {
     );
   }
 }
+
+
+

@@ -162,10 +162,8 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                 ProductGridItem(
                   imageUrl: product.imageUrl,
                   title: product.title,
-                  maxPrice: product.maxPrice.toString() ??
-                      '0', // استخدام maxPrice فقط
-                  startingPrice: product.startPrice.toString() ??
-                      '0', // استخدام maxPrice فقط
+                  maxPrice: product.maxPrice.toString(),
+                  startingPrice: product.startPrice.toString(),
                   endTime: product.endTime,
                   isFavorite: product.isFavourite,
                   isOngoing: product.isSold,
@@ -277,7 +275,7 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
         Text(
           subtitle,
           style: TextStyle(
-              fontSize: 16, color: Color(0xffDADADA).withOpacity(0.8)),
+              fontSize: 16, color: Color(0xffDADADA).withValues(alpha: 0.8)),
         ),
         const SizedBox(height: 45),
       ],
@@ -393,7 +391,7 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                  color: Colors.black.withOpacity(0.3),
+                                  color: Colors.black.withValues(alpha: 0.3),
                                   blurRadius: 10,
                                   offset: Offset(0, 5)),
                             ],
@@ -418,7 +416,7 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                                       begin: Alignment.bottomCenter,
                                       end: Alignment.topCenter,
                                       colors: [
-                                        Colors.black.withOpacity(0.7),
+                                        Colors.black.withValues(alpha: 0.7),
                                         Colors.transparent
                                       ],
                                     ),
@@ -441,7 +439,7 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Colors.white
-                                                  .withOpacity(0.9))),
+                                                  .withValues(alpha: 0.9))),
                                     ],
                                   ),
                                 ),
@@ -498,7 +496,7 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
           SizedBox(height: 10),
           Text("Add your ad now and reach thousands of users!",
               style:
-                  TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.8)),
+                  TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.8)),
               textAlign: TextAlign.center),
           SizedBox(height: 20),
           ElevatedButton(
@@ -554,7 +552,7 @@ class ExternalAdItem extends StatelessWidget {
                   SizedBox(height: 8),
                   Text(ad.description,
                       style: TextStyle(
-                          fontSize: 14, color: Colors.white.withOpacity(0.8))),
+                          fontSize: 14, color: Colors.white.withValues(alpha: 0.8))),
                 ],
               ),
             ),
@@ -564,3 +562,4 @@ class ExternalAdItem extends StatelessWidget {
     );
   }
 }
+

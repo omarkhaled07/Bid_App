@@ -7,7 +7,7 @@ class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
 
   @override
-  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
@@ -28,9 +28,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
       Get.snackbar("Success", "Password reset email sent to $email",
           backgroundColor: Colors.green, colorText: Colors.white);
-      print("✅ Password reset email sent to $email");
+      debugPrint("✅ Password reset email sent to $email");
     } on FirebaseAuthException catch (e) {
-      print("❌ Firebase Error: ${e.code}");
+      debugPrint("❌ Firebase Error: ${e.code}");
       String errorMessage = "Failed to send email.";
 
       if (e.code == 'invalid-email') {
@@ -42,7 +42,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       Get.snackbar("Error", errorMessage,
           backgroundColor: Colors.red, colorText: Colors.white);
     } catch (e) {
-      print("❌ Unexpected Error: $e");
+      debugPrint("❌ Unexpected Error: $e");
       Get.snackbar("Error", "Something went wrong. Try again.",
           backgroundColor: Colors.red, colorText: Colors.white);
     }

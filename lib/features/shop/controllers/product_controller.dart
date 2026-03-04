@@ -33,7 +33,7 @@ class ProductController extends GetxController {
       await FirebaseFirestore.instance.collection('products').add({
         'title': product.title,
         'size': product.size,
-        'color': product.color.value.toString(),
+        'color': product.color.toARGB32().toString(),
         'description': product.description,
         'imageUrl': product.imageUrl,
         'minPrice': product.minPrice,
