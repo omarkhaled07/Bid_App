@@ -1,11 +1,8 @@
 import 'package:bid/features/authentication/models/auth_model.dart';
+import 'package:bid/features/authentication/models/auth_view_model.dart';
 import 'package:bid/features/presonalization/screens/EditProfileScreen/edit_profile_screen.dart';
-import 'package:bid/features/shop/screens/shop_home_screen/shop_home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../authentication/controllers/auth_controller.dart';
 
 class AccountInfoScreen extends StatelessWidget {
   final Map<String, dynamic> userData;
@@ -15,7 +12,7 @@ class AccountInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF080618), // ✅ خلفية داكنة
+      backgroundColor: const Color(0xFF080618),
       body: Column(
         children: [
           _buildAppBar(context),
@@ -25,6 +22,8 @@ class AccountInfoScreen extends StatelessWidget {
           _buildEditButton(),
           const SizedBox(height: 10),
           _buildSignOutButton(),
+          const SizedBox(height: 10),
+          _buildDeleteAccountButton(context),
         ],
       ),
     );
@@ -34,7 +33,6 @@ class AccountInfoScreen extends StatelessWidget {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 40, left: 10),
-      // ✅ لإضافة مسافة آمنة للأعلى
       alignment: Alignment.centerLeft,
       child: Row(
         children: [
@@ -43,14 +41,13 @@ class AccountInfoScreen extends StatelessWidget {
                 color: Colors.black, size: 28),
             onPressed: () => Navigator.pop(context),
           ),
-          SizedBox(
-            width: 20,
+          const SizedBox(width: 20),
+          const CustomTextWidget(
+            txt: "Account Info",
+            txtsize: 18,
+            txtColor: Colors.black,
+            txtAlign: TextAlign.center,
           ),
-          CustomTextWidget(
-              txt: "Account Info",
-              txtsize: 18,
-              txtColor: Colors.black,
-              txtAlign: TextAlign.center)
         ],
       ),
     );
@@ -61,7 +58,7 @@ class AccountInfoScreen extends StatelessWidget {
       height: 200,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFFFFFFFF), Color(0xFF86D2C5)], // ✅ تدرج لوني داكن
+          colors: [Color(0xFFFFFFFF), Color(0xFF86D2C5)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -87,7 +84,7 @@ class AccountInfoScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Card(
-        color: const Color(0xFF10172A), // ✅ لون Card أفتح قليلاً مع ظل خفيف
+        color: const Color(0xFF10172A),
         elevation: 5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Padding(
@@ -114,22 +111,23 @@ class AccountInfoScreen extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: const Color(0xFF4A90E2), size: 24),
-          // ✅ لون أيقونات أزرق مميز
           const SizedBox(width: 10),
           Text(
             "$label:",
             style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFE0E0E0)), // ✅ لون نص أفتح
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFE0E0E0),
+            ),
           ),
           const SizedBox(width: 5),
           Expanded(
             child: Text(
               value,
               style: const TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFFC0C0C0)), // ✅ لون نص رمادي فاتح
+                fontSize: 16,
+                color: Color(0xFFC0C0C0),
+              ),
             ),
           ),
         ],
@@ -144,14 +142,17 @@ class AccountInfoScreen extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFFE70C), // ✅ لون زر التعديل
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: const Color(0xFFFFE70C),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           onPressed: () => Get.to(() => EditProfileScreen()),
-          child: const Text("Edit Profile",
-              style: TextStyle(fontSize: 18, color: Color(0xff333333))),
+          child: const Text(
+            "Edit Profile",
+            style: TextStyle(fontSize: 18, color: Color(0xff333333)),
+          ),
         ),
       ),
     );
@@ -164,24 +165,74 @@ class AccountInfoScreen extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFFFFE70C), // ✅ لون زر تسجيل الخروج
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: const Color(0xFFFFE70C),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+          ),
+          onPressed: () => Get.find<AuthViewModel>().signOut(),
+          child: const Text(
+            "Sign Out",
+            style: TextStyle(fontSize: 18, color: Color(0xff333333)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDeleteAccountButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             padding: const EdgeInsets.symmetric(vertical: 12),
           ),
           onPressed: () async {
-            await FirebaseAuth.instance.signOut();
+            final shouldDelete = await showDialog<bool>(
+              context: context,
+              builder: (dialogContext) => AlertDialog(
+                title: const Text("Delete Account"),
+                content: const Text(
+                  "This action will permanently delete your profile and cannot be undone.",
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(false),
+                    child: const Text("Cancel"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(true),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text("Delete"),
+                  ),
+                ],
+              ),
+            );
 
-            // ✅ تحديث حالة المستخدم بعد تسجيل الخروج
-            final authController = Get.find<AuthController>();
-            authController.isLoggedIn.value = false;
-            authController.userData.value = {};
+            if (shouldDelete != true) {
+              return;
+            }
 
-            // ✅ إعادة توجيه المستخدم لشاشة البداية وتحديث الواجهة
-            Get.offAll(() => ShopHomeScreen());
+            final error = await Get.find<AuthViewModel>().deleteAccount();
+            if (error != null && context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(error)),
+              );
+            }
           },
-          child: const Text("Sign Out",
-              style: TextStyle(fontSize: 18, color: Color(0xff333333))),
+          child: const Text(
+            "Delete Account",
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import '../../../authentication/models/auth_view_model.dart';
 import '../../controllers/product_controller.dart';
 import '../ProductDescriptionScreen/product_description_screen.dart';
 import '../shop_home_screen/body/product_grid_item.dart';
@@ -21,25 +22,25 @@ class _FavoritesPageState extends State<FavoritesPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final ProductController productController = Get.put(ProductController());
-  int _currentIndex = 1; // المفضلة
+  final AuthViewModel authViewModel = Get.find<AuthViewModel>();
+  int _currentIndex = 1;
 
   User? get currentUser => _auth.currentUser;
 
   void _onNavTap(int index) {
-    // عكس الفهارس لتتناسب مع الترتيب المعكوس للأيقونات
-    int reversedIndex = 3 - index; // 3 هو عدد العناصر - 1
+    int reversedIndex = 3 - index;
     setState(() => _currentIndex = reversedIndex);
     switch (reversedIndex) {
       case 0:
         Get.off(() => ShopHomeScreen());
         break;
-      case 1: // المفضلة
+      case 1:
         Get.off(() => FavoritesPage());
         break;
-      case 2: // السلة
+      case 2:
         Get.off(() => ShoppingCartPage());
         break;
-      case 3: // البث المباشر
+      case 3:
         Get.off(() => LivePage());
         break;
     }
@@ -53,10 +54,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
         backgroundColor: const Color(0xff080618),
       ),
       body: currentUser == null
-          ? const Center(
+          ? Center(
               child: Text(
-                "يجب تسجيل الدخول لعرض المفضلة",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                authViewModel.isGuestMode.value
+                    ? "Guest mode is read-only. Sign in to save favorites."
+                    : "يجب تسجيل الدخول لعرض المفضلة",
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+                textAlign: TextAlign.center,
               ),
             )
           : StreamBuilder(
@@ -108,7 +112,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                               !productSnapshot.data!.exists) {
                             return Card(
                               color: const Color(0xff1a1a2e),
-                              child: Center(
+                              child: const Center(
                                 child: Text("المنتج غير متوفر",
                                     style: TextStyle(color: Colors.white)),
                               ),

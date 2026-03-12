@@ -62,40 +62,12 @@ class AddAdScreen extends StatelessWidget {
     return days * 50.0;
   }
 
-  Future<String?> _fetchPaymobApiKey() async {
-    try {
-      DocumentSnapshot paymentSettings = await FirebaseFirestore.instance
-          .collection('payment_settings')
-          .doc('keys')
-          .get();
-      if (paymentSettings.exists) {
-        return paymentSettings['PaymobApiKey'] as String?;
-      }
-    } catch (e) {
-      print("Error fetching Paymob API key: $e");
-    }
-    return null;
-  }
-
   Future<void> _proceedToPayment(BuildContext context, int duration) async {
     double amount = _calculateCost(duration);
-    String? paymentKey = await _fetchPaymobApiKey();
-    if (paymentKey == null) {
-      Get.snackbar(
-        "Error",
-        "Failed to fetch payment key",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-      return;
-    }
-
     List<String> productIds = [];
 
     bool? paymentSuccess = await Get.to(() => PaymentScreen(
           amount: amount,
-          paymentKey: paymentKey,
           productIds: productIds,
         ));
 

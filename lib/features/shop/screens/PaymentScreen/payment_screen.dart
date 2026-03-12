@@ -4,17 +4,17 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../../utils/constants/api_constants.dart';
+import '../../services/paymob_service.dart';
 import 'payment_web_view.dart';
 
 class PaymentScreen extends StatefulWidget {
   final double amount;
-  final String paymentKey;
   final List<String> productIds;
 
   const PaymentScreen({
     super.key,
     required this.amount,
-    required this.paymentKey,
     required this.productIds,
   });
 
@@ -29,8 +29,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final RxBool _isProcessing = false.obs;
   final RxInt _selectedPaymentMethod = 0.obs;
+  final PaymobService _paymobService =
+      PaymobService(apiKey: APIKey.PaymobApiKey);
   String? _clientId;
   String? _secretKey;
+  String _countryCode = '+20';
+  int _paymobIntegrationId = APIKey.PaymobIntegrationId;
+  String _paymobIframeId = APIKey.PaymobIframeId;
+  String _paymobCurrency = 'EGP';
 
   @override
   void initState() {
@@ -53,6 +59,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             _nameController.text = userDoc['name'] ?? '';
             _emailController.text = userDoc['email'] ?? '';
             _phoneController.text = userDoc['phone'] ?? '';
+            _countryCode = userDoc['countryCode'] ?? '+20';
           });
         }
       }
@@ -71,6 +78,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
         setState(() {
           _clientId = paymentSettings['clientId'] as String?;
           _secretKey = paymentSettings['secretKey'] as String?;
+          _paymobIntegrationId =
+              _readInt(paymentSettings['PaymobIntegrationId']) ??
+                  APIKey.PaymobIntegrationId;
+          _paymobIframeId =
+              paymentSettings['PaymobIframeId']?.toString() ??
+                  APIKey.PaymobIframeId;
+          _paymobCurrency =
+              paymentSettings['PaymobCurrency']?.toString() ?? 'EGP';
         });
       }
     } catch (e) {
@@ -445,47 +460,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Future<bool> _processPayPalPayment(BuildContext context) async {
     if (_clientId == null || _secretKey == null) {
-      Get.snackbar(
-        "Error",
-        "Failed to load PayPal credentials",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _showMessage("Failed to load PayPal credentials", isError: true);
       return false;
     }
 
     try {
       _isProcessing.value = true;
-      Get.snackbar(
-        "Processing",
-        "Redirecting to PayPal...",
-        snackPosition: SnackPosition.BOTTOM,
-      );
-
-      final paymentData = {
-        "amount": widget.amount.toStringAsFixed(2),
-        "currency": "USD",
-        "name": _nameController.text.trim(),
-        "email": _emailController.text.trim(),
-        "phone": _phoneController.text.trim(),
-        "productIds": widget.productIds,
-      };
+      _showMessage("Redirecting to PayPal...");
 
       bool success = false;
 
-      final confirm = await Get.dialog<bool>(
-        AlertDialog(
+      final confirm = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
           title: const Text("Confirm PayPal Payment"),
           content: Text(
               "You will be redirected to PayPal to complete your payment of \$${widget.amount.toStringAsFixed(2)}"),
           actions: [
             TextButton(
-              onPressed: () => Get.back(result: false),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
               child: const Text("Cancel"),
             ),
             ElevatedButton(
-              onPressed: () => Get.back(result: true),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
               child: const Text("Continue to PayPal"),
             ),
           ],
@@ -516,22 +513,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 },
                 "description": "Payment for products",
                 "item_list": {
-                  "items": widget.productIds
-                      .map((id) => {
-                            "name": "Product $id",
-                            "quantity": 1,
-                            "price": (widget.amount / widget.productIds.length)
-                                .toStringAsFixed(2),
-                            "currency": "USD"
-                          })
-                      .toList(),
+                  "items": _buildPayPalItems(),
                 }
               }
             ],
             note: "Thank you for your purchase",
             onSuccess: (Map params) async {
               success = true;
-              await _savePaymentToFirestore(paymentData, true);
               if (context.mounted) {
                 Navigator.pop(context, true);
               }
@@ -555,13 +543,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
       return success;
     } catch (e) {
       print("PayPal Error: $e");
-      Get.snackbar(
-        "PayPal Error",
-        "An error occurred while connecting to PayPal",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _showMessage("An error occurred while connecting to PayPal",
+          isError: true);
       return false;
     } finally {
       _isProcessing.value = false;
@@ -588,39 +571,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Future<void> _validateAndPay(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
-      Get.snackbar(
-        "Validation Error",
-        "Please fill all required fields correctly",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
-        colorText: Colors.white,
-      );
+      _showMessage("Please fill all required fields correctly", isWarning: true);
       return;
     }
 
     if (widget.amount <= 0) {
-      Get.snackbar(
-        "Error",
-        "Invalid payment amount",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      _showMessage("Invalid payment amount", isError: true);
       return;
     }
 
-    final confirm = await Get.dialog<bool>(
-      AlertDialog(
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
         title: const Text("Confirm Payment"),
         content: Text(
             "You are about to pay \$${widget.amount.toStringAsFixed(2)}. Do you want to proceed?"),
         actions: [
           TextButton(
-            onPressed: () => Get.back(result: false),
+            onPressed: () => Navigator.of(dialogContext).pop(false),
             child: const Text("Cancel"),
           ),
           ElevatedButton(
-            onPressed: () => Get.back(result: true),
+            onPressed: () => Navigator.of(dialogContext).pop(true),
             child: const Text("Proceed", style: TextStyle(color: Colors.black)),
           ),
         ],
@@ -638,77 +610,173 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'amount': widget.amount,
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
-        'phone': _phoneController.text.trim(),
-        'paymentKey': widget.paymentKey,
+        'phone': _normalizedBillingPhone(),
         'productIds': widget.productIds,
+        'currency': _selectedPaymentMethod.value == 0 ? _paymobCurrency : 'USD',
       };
 
       bool? paymentSuccess;
 
       if (_selectedPaymentMethod.value == 0) {
-        DocumentSnapshot paymentSettings = await FirebaseFirestore.instance
-            .collection('payment_settings')
-            .doc('keys')
-            .get();
-        if (!paymentSettings.exists ||
-            paymentSettings['PaymobIframeId'] == null) {
-          Get.snackbar(
-            "Error",
-            "Failed to load Paymob settings",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-          );
+        final paymobPaymentToken = await _generatePaymobPaymentToken();
+        if (paymobPaymentToken == null) {
+          _isProcessing.value = false;
+          return;
+        }
+
+        if (_paymobIframeId.isEmpty) {
+          _showMessage("Failed to load Paymob settings", isError: true);
           _isProcessing.value = false;
           return;
         }
         final paymentUrl =
-            "https://accept.paymob.com/api/acceptance/iframes/${paymentSettings['PaymobIframeId']}?payment_token=${widget.paymentKey}";
+            "https://accept.paymob.com/api/acceptance/iframes/$_paymobIframeId?payment_token=$paymobPaymentToken";
 
         paymentSuccess = await Get.to<bool>(() => PaymentWebView(
               paymentUrl: paymentUrl,
               productIds: widget.productIds,
-              paymentData: paymentData,
+              paymentData: {
+                ...paymentData,
+                'paymentToken': paymobPaymentToken,
+              },
             ));
       } else {
         paymentSuccess = await _processPayPalPayment(context);
       }
 
       if (paymentSuccess == true) {
-        await _savePaymentToFirestore(
-            paymentData, _selectedPaymentMethod.value == 1);
-        Get.snackbar(
-          "Payment Successful",
-          "Your payment has been processed successfully",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 3),
-        );
+        if (_selectedPaymentMethod.value == 1) {
+          await _savePaymentToFirestore(paymentData, true);
+        }
+        _showMessage("Your payment has been processed successfully");
         if (context.mounted) {
           Navigator.pop(context, true);
         }
       } else if (paymentSuccess == false) {
-        Get.snackbar(
-          "Payment Failed",
-          "There was an error processing your payment",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 3),
-        );
+        _showMessage("There was an error processing your payment",
+            isError: true);
       }
     } catch (e) {
-      Get.snackbar(
-        "Error",
-        "An error occurred during payment: ${e.toString()}",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-      );
+      _showMessage("An error occurred during payment: ${e.toString()}",
+          isError: true);
     } finally {
       _isProcessing.value = false;
     }
+  }
+
+  List<Map<String, dynamic>> _buildPayPalItems() {
+    if (widget.productIds.isEmpty) {
+      return [
+        {
+          "name": "Service Payment",
+          "quantity": 1,
+          "price": widget.amount.toStringAsFixed(2),
+          "currency": "USD",
+        }
+      ];
+    }
+
+    final itemPrice = widget.amount / widget.productIds.length;
+    return widget.productIds
+        .map((id) => {
+              "name": "Product $id",
+              "quantity": 1,
+              "price": itemPrice.toStringAsFixed(2),
+              "currency": "USD"
+            })
+        .toList();
+  }
+
+  Future<String?> _generatePaymobPaymentToken() async {
+    try {
+      final authToken = await _paymobService.getAuthToken();
+      if (authToken == null) {
+        _showMessage("Failed to authenticate with Paymob", isError: true);
+        return null;
+      }
+
+      final amountCents = (widget.amount * 100).round();
+      final orderId = await _paymobService.createOrder(
+        authToken: authToken,
+        amountCents: amountCents,
+        currency: _paymobCurrency,
+      );
+      if (orderId == null) {
+        _showMessage("Failed to create Paymob order", isError: true);
+        return null;
+      }
+
+      final paymentToken = await _paymobService.getPaymentKey(
+        authToken: authToken,
+        orderId: orderId,
+        amountCents: amountCents,
+        billingName: _nameController.text.trim(),
+        billingEmail: _emailController.text.trim(),
+        billingPhone: _normalizedBillingPhone(),
+        integrationId: _paymobIntegrationId,
+        currency: _paymobCurrency,
+      );
+
+      if (paymentToken == null) {
+        _showMessage("Failed to generate Paymob payment token", isError: true);
+      }
+
+      return paymentToken;
+    } catch (e) {
+      _showMessage("Unable to start Paymob payment: $e", isError: true);
+      return null;
+    }
+  }
+
+  void _showMessage(String message,
+      {bool isError = false, bool isWarning = false}) {
+    if (!mounted) {
+      return;
+    }
+
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    if (messenger == null) {
+      return;
+    }
+
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: isError
+              ? Colors.red
+              : isWarning
+                  ? Colors.orange
+                  : Colors.green,
+        ),
+      );
+  }
+
+  String _normalizedBillingPhone() {
+    final rawPhone = _phoneController.text.trim().replaceAll(RegExp(r'\s+'), '');
+    final rawCountryCode = _countryCode.trim();
+    final digitsOnlyPhone = rawPhone.replaceAll(RegExp(r'[^0-9]'), '');
+    final normalizedCountryCode = rawCountryCode.startsWith('+')
+        ? rawCountryCode
+        : '+$rawCountryCode';
+
+    if (rawPhone.startsWith('+')) {
+      return rawPhone;
+    }
+
+    final nationalNumber =
+        digitsOnlyPhone.startsWith('0') ? digitsOnlyPhone.substring(1) : digitsOnlyPhone;
+    return '$normalizedCountryCode$nationalNumber';
+  }
+
+  int? _readInt(dynamic value) {
+    if (value is int) {
+      return value;
+    }
+    if (value is String) {
+      return int.tryParse(value);
+    }
+    return null;
   }
 }

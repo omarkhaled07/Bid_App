@@ -1,5 +1,6 @@
 import 'package:bid/features/authentication/models/auth_model.dart';
 import 'package:bid/features/authentication/screens/Login/login_screen.dart';
+import 'package:bid/features/shop/screens/shop_home_screen/shop_home_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -67,6 +68,11 @@ class SignUpScreen extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return "Please enter your email";
                     }
+                    final emailRegex = RegExp(
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                    if (!emailRegex.hasMatch(value.trim())) {
+                      return "Please enter a valid email";
+                    }
                     return null;
                   },
                 ),
@@ -89,6 +95,13 @@ class SignUpScreen extends StatelessWidget {
                             onChanged: (value) {
                               if (value != null) {
                                 selectedCountryCode.value = value;
+                                final selectedCountry = countryCodes.firstWhere(
+                                  (country) => country["code"] == value,
+                                  orElse: () =>
+                                      {"name": "Egypt", "code": "+20"},
+                                );
+                                selectedCountryName.value =
+                                    selectedCountry["name"]!;
                               }
                             },
                             decoration: InputDecoration(
@@ -122,7 +135,7 @@ class SignUpScreen extends StatelessWidget {
                           if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
                             return "Phone number must contain only digits";
                           }
-                          if (value.length < 8 || value.length > 12) {
+                          if (value.length < 6 || value.length > 14) {
                             return "Invalid phone number length";
                           }
                           return null;
@@ -171,14 +184,21 @@ class SignUpScreen extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return "Please enter your password";
                     }
+                    final passwordRegex =
+                        RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$');
+                    if (!passwordRegex.hasMatch(value)) {
+                      return "Use 8+ chars with upper, lower, and number";
+                    }
                     return null;
                   },
                 ),
                 SizedBox(height: 10),
                 CustomButton(
-                  onPress: () {
+                  onPress: () async {
+                    FocusScope.of(context).unfocus();
                     if (_formKey.currentState!.validate()) {
-                      controller.createAccountWithEmailAndPassword(
+                      final error =
+                          await controller.createAccountWithEmailAndPassword(
                         nameController.text.trim(),
                         emailController.text.trim(),
                         passwordController.text.trim(),
@@ -187,6 +207,14 @@ class SignUpScreen extends StatelessWidget {
                         selectedCountryCode.value.trim(),
                         selectedCountryName.value.trim(),
                       );
+                      if (error != null) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error)),
+                        );
+                        return;
+                      }
+                      Get.offAll(() => const ShopHomeScreen());
                     }
                   },
                   color: Color(0xffFFE70C),

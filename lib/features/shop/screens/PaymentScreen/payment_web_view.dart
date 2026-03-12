@@ -23,6 +23,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   late WebViewController _controller;
   bool isLoading = true;
   bool hasError = false;
+  bool _isHandlingResult = false;
   double progress = 0;
 
   @override
@@ -73,12 +74,31 @@ class _PaymentWebViewState extends State<PaymentWebView> {
 
   void _checkPaymentStatus(String url) {
     debugPrint('Checking payment status with URL: $url');
-    if (url.contains('success')) {
-      _handleSuccessfulPayment();
-    } else if (url.contains('fail') ||
+    if (_isHandlingResult) {
+      return;
+    }
+
+    final uri = Uri.tryParse(url);
+    final successParam = uri?.queryParameters['success']?.toLowerCase();
+    final pendingParam = uri?.queryParameters['pending']?.toLowerCase();
+    final responseCode = uri?.queryParameters['txn_response_code']?.toLowerCase();
+
+    final isSuccess = url.contains('success') ||
+        successParam == 'true' ||
+        responseCode == 'approved' ||
+        responseCode == 'accept';
+    final isFailure = url.contains('fail') ||
         url.contains('error') ||
         url.contains('declined') ||
-        url.contains('rejected')) {
+        url.contains('rejected') ||
+        successParam == 'false' ||
+        pendingParam == 'false';
+
+    if (isSuccess) {
+      _isHandlingResult = true;
+      _handleSuccessfulPayment();
+    } else if (isFailure) {
+      _isHandlingResult = true;
       Navigator.pop(context, false);
     }
   }
@@ -119,8 +139,8 @@ class _PaymentWebViewState extends State<PaymentWebView> {
         'userId': userId,
         'status': 'completed',
         'paymentGateway': 'Paymob',
-        'integrationId': paymentSettings['PaymobIntegrationId'] as String?,
-        'iframeId': paymentSettings['PaymobIframeId'] as String?,
+        'integrationId': paymentSettings['PaymobIntegrationId'],
+        'iframeId': paymentSettings['PaymobIframeId'],
         'timestamp': FieldValue.serverTimestamp(),
       };
 

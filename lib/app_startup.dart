@@ -7,11 +7,12 @@ enum StartupRoute {
 StartupRoute resolveStartupRoute({
   required bool hasSeenOnboarding,
   required bool isLoggedIn,
+  required bool isGuestMode,
 }) {
   if (!hasSeenOnboarding) {
     return StartupRoute.onboarding;
   }
-  if (isLoggedIn) {
+  if (isLoggedIn || isGuestMode) {
     return StartupRoute.home;
   }
   return StartupRoute.login;

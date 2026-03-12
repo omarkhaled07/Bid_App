@@ -34,11 +34,13 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool hasSeenOnboarding = prefs.getBool("hasSeenOnboarding") ?? false;
   bool isLoggedIn = prefs.getBool("isLoggedIn") ?? false;
+  bool isGuestMode = prefs.getBool("isGuestMode") ?? false;
   final hasFirebaseUser = FirebaseAuth.instance.currentUser != null;
 
   runApp(
     Bid(
       isLoggedIn: isLoggedIn && hasFirebaseUser,
+      isGuestMode: isGuestMode && !hasFirebaseUser,
       hasSeenOnboarding: hasSeenOnboarding,
     ),
   );
@@ -47,15 +49,20 @@ void main() async {
 class Bid extends StatelessWidget {
   final bool hasSeenOnboarding;
   final bool isLoggedIn;
+  final bool isGuestMode;
 
   const Bid(
-      {super.key, required this.isLoggedIn, required this.hasSeenOnboarding});
+      {super.key,
+      required this.isLoggedIn,
+      required this.isGuestMode,
+      required this.hasSeenOnboarding});
 
   @override
   Widget build(BuildContext context) {
     final StartupRoute startupRoute = resolveStartupRoute(
       hasSeenOnboarding: hasSeenOnboarding,
       isLoggedIn: isLoggedIn,
+      isGuestMode: isGuestMode,
     );
 
     final Widget initialScreen = switch (startupRoute) {

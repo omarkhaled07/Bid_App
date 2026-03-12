@@ -5,25 +5,52 @@ void main() {
   group('resolveStartupRoute', () {
     test('returns onboarding when onboarding is not seen', () {
       expect(
-        resolveStartupRoute(hasSeenOnboarding: false, isLoggedIn: false),
+        resolveStartupRoute(
+          hasSeenOnboarding: false,
+          isLoggedIn: false,
+          isGuestMode: false,
+        ),
         StartupRoute.onboarding,
       );
       expect(
-        resolveStartupRoute(hasSeenOnboarding: false, isLoggedIn: true),
+        resolveStartupRoute(
+          hasSeenOnboarding: false,
+          isLoggedIn: true,
+          isGuestMode: false,
+        ),
         StartupRoute.onboarding,
       );
     });
 
     test('returns login when onboarding is seen but user is not logged in', () {
       expect(
-        resolveStartupRoute(hasSeenOnboarding: true, isLoggedIn: false),
+        resolveStartupRoute(
+          hasSeenOnboarding: true,
+          isLoggedIn: false,
+          isGuestMode: false,
+        ),
         StartupRoute.login,
       );
     });
 
     test('returns home when onboarding is seen and user is logged in', () {
       expect(
-        resolveStartupRoute(hasSeenOnboarding: true, isLoggedIn: true),
+        resolveStartupRoute(
+          hasSeenOnboarding: true,
+          isLoggedIn: true,
+          isGuestMode: false,
+        ),
+        StartupRoute.home,
+      );
+    });
+
+    test('returns home when onboarding is seen and guest mode is enabled', () {
+      expect(
+        resolveStartupRoute(
+          hasSeenOnboarding: true,
+          isLoggedIn: false,
+          isGuestMode: true,
+        ),
         StartupRoute.home,
       );
     });

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../authentication/models/auth_view_model.dart';
 import '../../controllers/product_controller.dart';
 import '../../controllers/ad_controller.dart';
 import '../../models/ad_model.dart';
@@ -30,6 +31,7 @@ class ShopHomeScreen extends StatefulWidget {
 class _ShopHomeScreenState extends State<ShopHomeScreen> {
   final ProductController productController = Get.put(ProductController());
   final AdController adController = Get.put(AdController());
+  final AuthViewModel authViewModel = Get.find<AuthViewModel>();
   final PageController _pageController = PageController(viewportFraction: 0.8);
   int _selectedIndex = 0;
   int _currentIndex = 0; // تم تعديل القيمة إلى 0 لأنها الصفحة الرئيسية (مزاد)
@@ -175,6 +177,16 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
                   left: Get.locale?.languageCode == 'ar' ? 20 : null,
                   child: GestureDetector(
                     onTap: () {
+                      final bool hasUser =
+                          FirebaseAuth.instance.currentUser != null;
+                      if (!hasUser || authViewModel.isGuestMode.value) {
+                        Get.snackbar(
+                          "Sign in required",
+                          "Guest users can browse only. Please sign in to manage favorites.",
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                        return;
+                      }
                       toggleFavorite(product.id, product.title);
                       productController.toggleFavorite(product.id);
                     },
@@ -205,6 +217,16 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
 
   // بقية الدوال مثل toggleFavorite تبقى كما هي
   Future<void> toggleFavorite(String productId, String productName) async {
+    final bool hasUser = FirebaseAuth.instance.currentUser != null;
+    if (!hasUser || authViewModel.isGuestMode.value) {
+      Get.snackbar(
+        "Sign in required",
+        "Guest users can browse only. Please sign in to manage favorites.",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     final User? currentUser = auth.currentUser;
@@ -500,7 +522,18 @@ class _ShopHomeScreenState extends State<ShopHomeScreen> {
               textAlign: TextAlign.center),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () => Get.to(() => AddAdScreen()),
+            onPressed: () {
+              final bool hasUser = FirebaseAuth.instance.currentUser != null;
+              if (!hasUser || authViewModel.isGuestMode.value) {
+                Get.snackbar(
+                  "Sign in required",
+                  "Guest users can browse only. Please sign in to add ads.",
+                  snackPosition: SnackPosition.BOTTOM,
+                );
+                return;
+              }
+              Get.to(() => AddAdScreen());
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xffFFE70C),
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),

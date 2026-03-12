@@ -94,6 +94,12 @@ class LoginScreen extends StatelessWidget {
                   color: Color(0xffFFE70C),
                   text: "Log In",
                 ),
+                SizedBox(height: 12),
+                CustomButton(
+                  onPress: controller.continueAsGuest,
+                  color: Color(0xffDADADA),
+                  text: "Continue as Guest",
+                ),
                 SizedBox(height: 20),
                 Center(
                   child: RichText(

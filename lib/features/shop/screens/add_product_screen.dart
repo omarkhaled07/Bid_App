@@ -8,8 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../utils/constants/api_constants.dart';
-import '../services/paymob_service.dart';
 import 'PaymentScreen/payment_screen.dart';
 
 class AddProductScreen extends StatefulWidget {
@@ -56,9 +54,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   ];
 
   final List<int> promotionDaysOptions = [1, 3, 7, 14, 30];
-
-  final PaymobService _paymobService =
-      PaymobService(apiKey: APIKey.PaymobApiKey);
 
   Future<void> pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
@@ -180,58 +175,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   Future<bool?> _initiatePayment(double amount) async {
     try {
-      print("Starting payment process...");
-      String? authToken = await _paymobService.getAuthToken();
-      if (authToken == null) {
-        Get.snackbar("Error", "Failed to get auth token");
-        print("Failed to get auth token.");
-        return false;
-      }
-      print("Auth Token: $authToken");
-
-      int amountCents = (amount * 100).toInt();
-      int? orderId = await _paymobService.createOrder(
-        authToken: authToken,
-        amountCents: amountCents,
-      );
-      if (orderId == null) {
-        Get.snackbar("Error", "Failed to create order");
-        print("Failed to create order.");
-        return false;
-      }
-      print("Order ID: $orderId");
-
-      User? user = FirebaseAuth.instance.currentUser;
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user!.uid)
-          .get();
-      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-      String billingName = userData['name'] ?? "Unknown User";
-      String billingEmail = userData['email'] ?? "user@example.com";
-      String billingPhone = userData['phone'] ?? "01012345678";
-      int integrationId = APIKey.PaymobIntegrationId;
-
-      String? paymentKey = await _paymobService.getPaymentKey(
-        authToken: authToken,
-        orderId: orderId,
-        amountCents: amountCents,
-        billingName: billingName,
-        billingEmail: billingEmail,
-        billingPhone: billingPhone,
-        integrationId: integrationId,
-      );
-      if (paymentKey == null) {
-        Get.snackbar("Error", "Failed to get payment key");
-        print("Failed to get payment key.");
-        return false;
-      }
-      print("Payment Key: $paymentKey");
-
       bool? paymentSuccess = await Get.to(
         () => PaymentScreen(
           amount: amount,
-          paymentKey: paymentKey,
           productIds: [],
         ),
       );
